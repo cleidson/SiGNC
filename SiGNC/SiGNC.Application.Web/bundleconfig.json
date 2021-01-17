@@ -1,0 +1,90 @@
+[
+  //https://qastack.com.br/programming/48481003/how-to-use-bootstrap-4-in-asp-net-core
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+    "inputFiles": [ "node_modules/bootstrap/dist/css/bootstrap.css" ],
+    "minify": { "enabled": false }
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap.css.map",
+    "inputFiles": [ "node_modules/bootstrap/dist/css/bootstrap.css.map" ],
+    "minify": { "enabled": false }
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+    "inputFiles": [ "node_modules/bootstrap/dist/css/bootstrap.min.css" ],
+    "minify": { "enabled": false }
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map",
+    "inputFiles": [ "node_modules/bootstrap/dist/css/bootstrap.min.css.map" ],
+    "minify": { "enabled": false }
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
+    "inputFiles": [ "node_modules/bootstrap/dist/css/bootstrap-grid.css" ],
+    "minify": { "enabled": false }
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map",
+    "inputFiles": [ "node_modules/bootstrap/dist/css/bootstrap-grid.css.map" ],
+    "minify": { "enabled": false }
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
+    "inputFiles": [ "node_modules/bootstrap/dist/css/bootstrap-reboot.css" ],
+    "minify": { "enabled": false }
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
+    "inputFiles": [ "node_modules/bootstrap/dist/css/bootstrap-reboot.css.map" ],
+    "minify": { "enabled": false }
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
+    "inputFiles": [ "node_modules/bootstrap/dist/css/bootstrap-reboot.min.css" ],
+    "minify": { "enabled": false }
+  },
+
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
+    "inputFiles": [ "node_modules/bootstrap/dist/css/bootstrap-reboot.min.css.map" ],
+    "minify": { "enabled": false }
+  },
+
+  {
+    "outputFileName": "wwwroot/lib/jquery/dist/jquery.js",
+    "inputFiles": [
+      "node_modules/jquery/dist/jquery.js"
+    ],
+    "minify": { "enabled": false }
+  },
+  {
+    "outputFileName": "wwwroot/lib/jquery/dist/jquery.min.map",
+    "inputFiles": [
+      "node_modules/jquery/dist/jquery.min.map"
+    ],
+    "minify": { "enabled": false }
+  },
+  {
+    "outputFileName": "wwwroot/lib/jquery/dist/jquery.min.js",
+    "inputFiles": [
+      "node_modules/jquery/dist/jquery.min.js"
+    ],
+    "minify": { "enabled": false }
+  },
+  {
+    "outputFileName": "wwwroot/lib/jquery/dist/popper.min.js",
+    "inputFiles": [
+      "node_modules/jquery/dist/popper.min.js"
+    ],
+    "minify": { "enabled": false }
+  },
+  {
+    "outputFileName": "wwwroot/lib/jquery/dist/bootstrap.min.js",
+    "inputFiles": [
+      "node_modules/jquery/dist/bootstrap.min.js"
+    ],
+    "minify": { "enabled": false }
+  }
+]
