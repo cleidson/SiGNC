@@ -1,9 +1,14 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using SiGNC.Application.Web.NET5.Helpers;
+using SiGNC.Core.Services.IoC;
+using SiGNC.Infra.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +32,47 @@ namespace SiGNC.Application.Web.NET5
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 #endif
 
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.RegisterServices();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+               .AddJwtBearer(option =>
+               {
+                   option.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuer = true,
+                       ValidateAudience = true,
+                       ValidateLifetime = true,
+                       ValidateIssuerSigningKey = true,
+                       ValidIssuer = "SiGN.Api",
+                       ValidAudience = "SiGN.Api",
+                       IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Configuration.GetSection("AppSettings")["SecretKey"]))
+                   };
+
+                   option.Events = new JwtBearerEvents
+                   {
+                       OnAuthenticationFailed = context =>
+                       {
+                           Console.WriteLine("OnAuthenticationFailed: " + context.Exception.Message);
+                           return Task.CompletedTask;
+                       },
+                       OnTokenValidated = context =>
+                       {
+                           Console.WriteLine("OnTokenValidated: " + context.SecurityToken);
+                           return Task.CompletedTask;
+                       }
+                   };
+               });
+
+
             services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+           
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -45,11 +85,10 @@ namespace SiGNC.Application.Web.NET5
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            app.UseAuthentication(); 
             app.UseAuthorization();
-
+             
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
