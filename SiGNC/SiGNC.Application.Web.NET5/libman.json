@@ -5,11 +5,10 @@
     {
       "library": "twitter-bootstrap@4.5.3",
       "destination": "wwwroot/lib/bootstrap/dist/"
-    }
-  ,
-{
-  "library": "feather-icons@4.28.0",
-  "destination": "wwwroot/lib/feather-icons/"
-}
+    },
+    {
+      "library": "feather-icons@4.28.0",
+      "destination": "wwwroot/lib/feather-icons/"
+    }  
 ]
 }

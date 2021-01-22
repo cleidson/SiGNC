@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,6 +9,8 @@
 
 </head>
 <body>
+
+
     <header>
         @*<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
                 <div class="container">
@@ -45,76 +47,109 @@
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
                 <div class="sidebar-sticky">
+
                     <ul class="nav flex-column">
                         @*<li class="nav-item">
-                            <a class="nav-link " href="#">
-                                <span data-feather="home"></span>
-                                Dashboard <span class="sr-only">(current)</span>
-                            </a>
-                        </li>*@
+                                <a class="nav-link " href="#">
+                                    <span data-feather="home"></span>
+                                    Dashboard <span class="sr-only">(current)</span>
+                                </a>
+                            </li>*@
                         <li class="nav-item">
                             <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">
-                                <span  data-feather="home"></span>
-                                Inicio 
+                                <span data-feather="home"></span>
+                                Inicio
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="shopping-cart"></span>
-                                Usuarios
+                            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                                <span>Conformidades</span>
+                                <a class="d-flex align-items-center text-muted" href="#">
+                                    <span data-feather="list"></span>
+                                </a>
+                            </h6>
+                            <a class="nav-link" asp-controller="Conformidade" asp-action="Index">
+                                <span data-feather="folder"></span>
+                                Novas conformidades
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="users"></span>
-                                Customers
+                            <a class="nav-link" asp-controller="Conformidade" asp-action="Pendentes">
+                                <span data-feather="folder"></span>
+                                Pendentes
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="bar-chart-2"></span>
-                                Reports
+                            <a class="nav-link" asp-controller="Conformidade" asp-action="EmAndamento">
+                                <span data-feather="folder"></span>
+                                Em andamento
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="layers"></span>
-                                Integrations
+                            <a class="nav-link" asp-controller="Conformidade" asp-action="Finalizadas">
+                                <span data-feather="folder"></span>
+                                Finalizadas
+                            </a>
+                        </li>
+                        @*<li class="nav-item">
+                                <a class="nav-link"  asp-area="" asp-controller="Relatorio" asp-action="Index">
+                                    <span data-feather="bar-chart-2"></span>
+                                    Relatórios
+                                </a>
+                            </li>*@
+                        @*<li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span data-feather="layers"></span>
+                                    Integrations
+                                </a>
+                            </li>*@
+                        <li class="nav-item">
+                            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                                <span>Usuários</span>
+                                <a class="d-flex align-items-center text-muted" href="#">
+                                    <span data-feather="list"></span>
+                                </a>
+                            </h6>
+                            <a class="nav-link" asp-controller="Conformidade" asp-action="Index">
+                                <span data-feather="folder"></span>
+                                Listar
                             </a>
                         </li>
                     </ul>
 
-                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                        <span>Saved reports</span>
-                        <a class="d-flex align-items-center text-muted" href="#">
-                            <span data-feather="plus-circle"></span>
-                        </a>
-                    </h6>
+
                     <ul class="nav flex-column mb-2">
+
                         <li class="nav-item">
+                            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                                <span>Relatórios</span>
+                                <a class="d-flex align-items-center text-muted" href="#">
+                                    <span data-feather="plus-circle"></span>
+                                </a>
+                            </h6>
                             <a class="nav-link" href="#">
                                 <span data-feather="file-text"></span>
-                                Current month
+                                Mensal
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
                                 <span data-feather="file-text"></span>
-                                Last quarter
+                                Total de usuários
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Social engagement
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Year-end sale
-                            </a>
-                        </li>
+                        @*<li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span data-feather="file-text"></span>
+                                    Social engagement
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span data-feather="file-text"></span>
+                                    Year-end sale
+                                </a>
+                            </li>*@
                     </ul>
                 </div>
             </nav>

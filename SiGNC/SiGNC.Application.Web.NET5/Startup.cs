@@ -35,7 +35,13 @@ namespace SiGNC.Application.Web.NET5
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.RegisterServices();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(
+                x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+                )
                .AddJwtBearer(option =>
                {
                    option.TokenValidationParameters = new TokenValidationParameters
@@ -86,6 +92,14 @@ namespace SiGNC.Application.Web.NET5
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+
+
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+
             app.UseAuthentication(); 
             app.UseAuthorization();
              
@@ -93,7 +107,7 @@ namespace SiGNC.Application.Web.NET5
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Token}/{action=Index}/{id?}");
             });
         }
     }
