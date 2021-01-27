@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Base\" />
-    <Folder Include="Views\Conformidade\Partial\" />
   </ItemGroup>
 
   <ItemGroup>

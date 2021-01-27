@@ -9,6 +9,14 @@
     {
       "library": "feather-icons@4.28.0",
       "destination": "wwwroot/lib/feather-icons/"
-    }  
-]
+    },
+    {
+      "library": "bootstrap-select@1.13.18",
+      "destination": "wwwroot/lib/bootstrap/dist/"
+    },
+    {
+      "library": "font-awesome@5.15.2",
+      "destination": "wwwroot/lib/bootstrap/font-awesome"
+    }
+  ]
 }
