@@ -2,12 +2,16 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using SiGNC.Application.Web.NET5.Helpers;
 using SiGNC.Core.Services.IoC;
+using SiGNC.Infra.Data.Context;
+using SiGNC.Infra.Data.Models;
 using SiGNC.Infra.Settings;
 using System;
 using System.Collections.Generic;
@@ -31,8 +35,14 @@ namespace SiGNC.Application.Web.NET5
 #if DEBUG       
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 #endif
+            services.AddDbContext<ApplicationDbContext>(options =>
+             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+ 
             services.RegisterServices();
 
             services.AddAuthentication(
@@ -92,7 +102,7 @@ namespace SiGNC.Application.Web.NET5
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-
+             
 
             app.UseCors(x => x
                 .AllowAnyOrigin()
