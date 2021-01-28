@@ -28,16 +28,21 @@
         ]
     };
 
+
+    $("#btn-editar-conformidade").click(() => {
+        $("#block-cadastro").removeAttr("hidden", "hidden"); 
+    });
+
     $("#btn-salvar-conformidade").click(function (event) {
 
         conformidade.Eminente = $("#emitente").val();
         conformidade.NumeroConformidade = $("#numero-nao-conformidade").val();
-        conformidade.Status ="Novo";
+        conformidade.Status = "Novo";
         conformidade.DataEmissao = $("#data-emissao").val();
         conformidade.Origem = $('#selectOrigem').selectpicker('val');
         conformidade.Reincidente = $('#selectReincidente').selectpicker('val');
         conformidade.Requisito = $('#selectRequisito').selectpicker('val');
-    
+
 
         conformidade.Detalhamentos = getValuesTableConformidadePendentes();
 
@@ -66,11 +71,24 @@
         return tbl;
     };
 
+    $("#btn-cancelar-conformidade").click(() => {
+
+        $("#block-cadastro").attr("hidden", "hidden"); 
+
+    });
+
+
+
     function Init() {
+
+        $("#block-cadastro").attr("hidden", "hidden"); 
+
+
         $("#data-emissao").val(dataAtualFormatada);
         $("#btnDeletarRow").hide();
         setTableEmpty();
 
+        $("#data-acao-imediata").mask("99/99/9999");
     };
 
     function setTableEmpty() {

@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "Pendentes";
+    ViewData["HeaderPage"] = "Andamentos da  conformidades";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -8,191 +9,42 @@
 </div>
 
 <div class="flex-row margin-top-10px">
-    <form>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputEmail4">Email</label>
-                <input type="email" class="form-control" id="inputEmail4">
+
+    <form id="form-em-andamento-conformidade">
+
+        <div class="flex-row margin-top-10px">
+
+            <!-- Formulário cadastro básico-->
+            <partial name="~/Views/Conformidade/Partial/_FormCadastroBasicoConformidade.cshtml" />
+
+            <div id="block-cadastro">
+                <!-- Detalhamento da conformidade -->
+                <partial name="~/Views/Conformidade/Partial/_FormDetalhamentoConformidade.cshtml" />
+
+                <!-- Ação corretiva-->
+                <partial name="~/Views/Conformidade/Partial/_FormAcaoCorretivaConformidade.cshtml" />
+
+
+                <!-- Análise causa raiz -->
+                <partial name="~/Views/Conformidade/Partial/_FormCausaRaiz.cshtml" />
+
+                <div class="form-row">
+                    
+                    <div class="form-group col-md-12 float-md-right">
+
+                        <button type="button" class="btn btn-primary float-md-right   margin-left-4px" id="btn-salvar-conformidade">Salvar</button>
+                        <button type="reset" class="btn btn-danger float-md-right" id="btn-cancelar-conformidade">Cancelar</button>
+                    </div>
+                </div>
             </div>
-            <div class="form-group col-md-6">
-                <label for="inputPassword4">Password</label>
-                <input type="password" class="form-control" id="inputPassword4">
-            </div>
+            <!-- Form table conformidade -->
+            <partial name="~/Views/Conformidade/Partial/_FormTableConformidadeEdit.cshtml" />
+
         </div>
-        <div class="form-group">
-            <label for="inputAddress">Address</label>
-            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-        </div>
-        <div class="form-group">
-            <label for="inputAddress2">Address 2</label>
-            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputCity">City</label>
-                <input type="text" class="form-control" id="inputCity">
-            </div>
-            <div class="form-group col-md-4">
-                <label for="inputState">State</label>
-                <select id="inputState" class="form-control">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                </select>
-            </div>
-            <div class="form-group col-md-2">
-                <label for="inputZip">Zip</label>
-                <input type="text" class="form-control" id="inputZip">
-            </div>
-        </div> 
-        <button type="submit" class="btn btn-secondary  " disabled>Editar</button>
-        @*<button type="submit" class="btn btn-primary " disabled>Editar</button>*@
     </form>
 </div>
-<div class="flex-row margin-top-12px">
-    <h2>Conformidades em andamento</h2>
-    <div class="table-responsive">
-        <table class="table table-striped table-sm">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                </tr>
-            </thead>
-            <tbody>
-                @*<tr style="cursor:pointer">*@
-                <tr >
-                    <td cl>1,001</td>
-                    <td>Lorem</td>
-                    <td>ipsum</td>
-                    <td>dolor</td>
-                    <td>sit</td>
-                    <td>sit</td>
-                </tr>
-                <tr>
-                    <td>1,002</td>
-                    <td>amet</td>
-                    <td>consectetur</td>
-                    <td>adipiscing</td>
-                    <td>elit</td>
-                    <td>elit</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>Integer</td>
-                    <td>nec</td>
-                    <td>odio</td>
-                    <td>Praesent</td>
-                    <td>Praesent</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>libero</td>
-                    <td>Sed</td>
-                    <td>cursus</td>
-                    <td>ante</td>
-                    <td>ante</td>
-                </tr>
-                <tr>
-                    <td>1,004</td>
-                    <td>dapibus</td>
-                    <td>diam</td>
-                    <td>Sed</td>
-                    <td>nisi</td>
-                    <td>nisi</td>
-                </tr>
-                <tr>
-                    <td>1,005</td>
-                    <td>Nulla</td>
-                    <td>quis</td>
-                    <td>sem</td>
-                    <td>at</td>
-                    <td>at</td>
-                </tr>
-                <tr>
-                    <td>1,006</td>
-                    <td>nibh</td>
-                    <td>elementum</td>
-                    <td>imperdiet</td>
-                    <td>Duis</td>
-                    <td>Duis</td>
-                </tr>
-                <tr>
-                    <td>1,007</td>
-                    <td>sagittis</td>
-                    <td>ipsum</td>
-                    <td>Praesent</td>
-                    <td>mauris</td>
-                    <td>mauris</td>
-                </tr>
-                <tr>
-                    <td>1,008</td>
-                    <td>Fusce</td>
-                    <td>nec</td>
-                    <td>tellus</td>
-                    <td>sed</td>
-                    <td>sed</td>
-                </tr>
-                <tr>
-                    <td>1,009</td>
-                    <td>augue</td>
-                    <td>semper</td>
-                    <td>porta</td>
-                    <td>Mauris</td>
-                    <td>Mauris</td>
-                </tr>
-                <tr>
-                    <td>1,010</td>
-                    <td>massa</td>
-                    <td>Vestibulum</td>
-                    <td>lacinia</td>
-                    <td>arcu</td>
-                    <td>arcu</td>
-                </tr>
-                <tr>
-                    <td>1,011</td>
-                    <td>eget</td>
-                    <td>nulla</td>
-                    <td>Class</td>
-                    <td>aptent</td>
-                    <td>aptent</td>
-                </tr>
-                <tr>
-                    <td>1,012</td>
-                    <td>taciti</td>
-                    <td>sociosqu</td>
-                    <td>ad</td>
-                    <td>litora</td>
-                    <td>litora</td>
-                </tr>
-                <tr>
-                    <td>1,013</td>
-                    <td>torquent</td>
-                    <td>per</td>
-                    <td>conubia</td>
-                    <td>nostra</td>
-                    <td>nostra</td>
-                </tr>
-                <tr>
-                    <td>1,014</td>
-                    <td>per</td>
-                    <td>inceptos</td>
-                    <td>himenaeos</td>
-                    <td>Curabitur</td>
-                    <td>Curabitur</td>
-                </tr>
-                <tr>
-                    <td>1,015</td>
-                    <td>sodales</td>
-                    <td>ligula</td>
-                    <td>in</td>
-                    <td>libero</td>
-                    <td>libero</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+ 
+@section Scripts
+{
+    <script src="~/js/app/conformidade/conformidade-edit.js"></script>
+}

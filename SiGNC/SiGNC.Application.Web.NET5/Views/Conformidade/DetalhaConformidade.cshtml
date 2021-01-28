@@ -1,7 +1,37 @@
 ﻿
 @{
-    ViewData["Title"] = "DetalhaConformidade";
+    ViewData["Title"] = "Detalhes da conformidade";
+    ViewData["HeaderPage"] = "Detalhes da conformidade";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Detalhes da conformidade</h1>
+</div>
 
-<h1>DetalhaConformidade</h1>
+<form id="form-detalha-conformidade">
 
+    <div class="flex-row margin-top-10px">
+
+        <!-- Formulário cadastro básico-->
+        <partial name="~/Views/Conformidade/Partial/_FormCadastroBasicoConformidade.cshtml" />
+
+        <!-- Detalhamento da conformidade -->
+        <partial name="~/Views/Conformidade/Partial/_FormDetalhamentoConformidade.cshtml" />
+
+        <!-- Ação corretiva-->
+        <partial name="~/Views/Conformidade/Partial/_FormAcaoCorretivaConformidade.cshtml" />
+
+        <!-- Análise causa raiz -->
+        <partial name="~/Views/Conformidade/Partial/_FormCausaRaiz.cshtml" />
+
+        <!-- Form table conformidade -->
+        <partial name="~/Views/Conformidade/Partial/_FormTableConformidade.cshtml" />
+    </div>
+</form>
+
+@section Scripts
+{
+
+    <script src="~/js/app/conformidade/conformidade-details.js"></script>
+
+}

@@ -78,7 +78,7 @@ namespace SiGNC.Application.Web.NET5.Controllers
         #endregion
 
         [HttpGet]
-        public IActionResult DetalhaConformidade()
+        public IActionResult DetalhaConformidade(int id)
         {
             return View();
         } 
