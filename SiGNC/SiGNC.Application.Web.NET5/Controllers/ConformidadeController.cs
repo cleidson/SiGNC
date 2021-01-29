@@ -4,14 +4,16 @@ using SiGNC.Application.Web.NET5.Models.Conformidade;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SiGNC.Application.Web.NET5.Controllers
 {
-    //[Route("Conformidade")]
+
     //[Route("api/[controller]")]
+    //[Route("Conformidade")]
     //[ApiController]
     public class ConformidadeController : Controller
     {
@@ -28,19 +30,47 @@ namespace SiGNC.Application.Web.NET5.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Route("Pendentes")]
         public IActionResult Pendentes()
         {
             return View();
         }
 
+        [HttpGet]
+        [Route("EmAndamento")]
         public IActionResult EmAndamento()
         {
             return View();
         }
 
+        [HttpGet]
+        [Route("Finalizadas")]
         public IActionResult Finalizadas()
         {
             return View();
+        }
+
+        //[Route("salvar")]
+        //[HttpPost("salvar")]
+        //public IActionResult SalvarConformidade(ConformidadeViewModel conformidade)
+        //{
+        //    try
+        //    {
+        //        return Json(conformidade);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+        [HttpPost("salvar")]
+        [Route("salvar")]
+        public async Task<HttpResponseMessage> SalvarConformidade(ConformidadeViewModel conformidade)
+        {
+            return await Task.Run(() => new HttpResponseMessage() { StatusCode = (System.Net.HttpStatusCode)200 }); 
+           
         }
 
 

@@ -21,6 +21,10 @@
     {
       "library": "jquery.maskedinput@1.4.1",
       "destination": "wwwroot/lib/jquery.maskedinput/"
+    },
+    {
+      "library": "limonte-sweetalert2@10.14.0",
+      "destination": "wwwroot/lib/limonte-sweetalert2/"
     }
   ]
 }

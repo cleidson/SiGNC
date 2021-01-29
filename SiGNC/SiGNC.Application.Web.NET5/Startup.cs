@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,9 @@ using SiGNC.Infra.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Threading.Tasks;  
 
 namespace SiGNC.Application.Web.NET5
 {
@@ -35,14 +38,19 @@ namespace SiGNC.Application.Web.NET5
 #if DEBUG       
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 #endif
-            services.AddDbContext<ApplicationDbContext>(options =>
-             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<ApplicationUser, IdentityRole>() .AddEntityFrameworkStores<ApplicationDbContext>() .AddDefaultTokenProviders(); 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
- 
+
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                // Use the default property (Pascal) casing.
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                options.JsonSerializerOptions.WriteIndented = true;
+            });
+
+            services.AddCors();
+
             services.RegisterServices();
 
             services.AddAuthentication(
@@ -85,7 +93,7 @@ namespace SiGNC.Application.Web.NET5
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
            
 
@@ -99,6 +107,8 @@ namespace SiGNC.Application.Web.NET5
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+             
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
@@ -119,6 +129,26 @@ namespace SiGNC.Application.Web.NET5
                     name: "default",
                     pattern: "{controller=Token}/{action=Index}/{id?}");
             });
+
+
+            CreateRoles(serviceProvider).Wait();
         }
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            string[] rolesNames = { "Admin", "User" };
+            IdentityResult result;
+            foreach (var namesRole in rolesNames)
+            {
+                var roleExist = await roleManager.RoleExistsAsync(namesRole);
+                if (!roleExist)
+                {
+                    result = await roleManager.CreateAsync(new IdentityRole(namesRole));
+                }
+            }
+        }
+
+
     }
 }

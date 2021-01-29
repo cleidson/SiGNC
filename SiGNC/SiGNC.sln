@@ -11,17 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-Infra", "3-Infra", "{0067
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.1-Web", "1.1-Web", "{FB93AF0D-4AA4-4BC9-9AF9-61A6B459082B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiGNC.Core.Services", "SiGNC.Core.Services\SiGNC.Core.Services.csproj", "{E82CA7C5-530C-4C5A-919B-2461100A1EEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiGNC.Core.Services", "SiGNC.Core.Services\SiGNC.Core.Services.csproj", "{E82CA7C5-530C-4C5A-919B-2461100A1EEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiGNC.Infra", "SiGNC.Infra\SiGNC.Infra.csproj", "{66445A55-AF01-4D30-8521-7DBC3E99A1A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiGNC.Infra", "SiGNC.Infra\SiGNC.Infra.csproj", "{66445A55-AF01-4D30-8521-7DBC3E99A1A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiGNC.Infra.Data", "SiGNC.Infra.Data\SiGNC.Infra.Data.csproj", "{9B65646D-5E27-4810-BB63-B7569881E894}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiGNC.Infra.Data", "SiGNC.Infra.Data\SiGNC.Infra.Data.csproj", "{9B65646D-5E27-4810-BB63-B7569881E894}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiGNC.Core.Services.IoC", "SiGNC.Core.Services.IoC\SiGNC.Core.Services.IoC.csproj", "{6DB9B7C8-C20F-4788-8DC3-B31DCCF21924}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiGNC.Core.Services.IoC", "SiGNC.Core.Services.IoC\SiGNC.Core.Services.IoC.csproj", "{6DB9B7C8-C20F-4788-8DC3-B31DCCF21924}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiGNC.Application.Web", "SiGNC.Application.Web\SiGNC.Application.Web.csproj", "{FE1C5A26-B0B6-40E9-BF00-D3DB60C028DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiGNC.Application.Web", "SiGNC.Application.Web\SiGNC.Application.Web.csproj", "{FE1C5A26-B0B6-40E9-BF00-D3DB60C028DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiGNC.Application.Web.NET5", "SiGNC.Application.Web.NET5\SiGNC.Application.Web.NET5.csproj", "{C1A35A0A-EB41-407E-ABA7-044380A8F547}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiGNC.Application.Web.NET5", "SiGNC.Application.Web.NET5\SiGNC.Application.Web.NET5.csproj", "{C1A35A0A-EB41-407E-ABA7-044380A8F547}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

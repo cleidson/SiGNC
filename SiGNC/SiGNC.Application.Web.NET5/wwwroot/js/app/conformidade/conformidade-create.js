@@ -1,15 +1,16 @@
 ﻿(function () {
 
     let conformidade = {
-        Eminente: "",
+        Eminente: { Id: "", Nome:"" },
         NumeroConformidade: "",
-        Status: "",
+        StatusConformidadeId: "",
         DataEmissao: "",
-        Origem: "",
+        OrigemConformidadeId: "",
         Reincidente: "",
         Requisito: "",
         Detalhamentos: [
             {
+                Id:"",
                 Descricao: "",
                 Detalhamento: "",
             }
@@ -17,7 +18,7 @@
         AcaoCorretiva: {
             Descricao: "",
             DataImplatacao: "",
-            Responsavel: ""
+            Responsavel: { Id: "", Nome: "" }
         },
         CausaRaizes: [
             {
@@ -33,11 +34,11 @@
     });
     $("#btn-salvar-conformidade").click(function (event) {
 
-        conformidade.Eminente = $("#emitente").val();
+        conformidade.Eminente.Nome = $("#emitente").val();
         conformidade.NumeroConformidade = $("#numero-nao-conformidade").val();
-        conformidade.Status ="Novo";
+        conformidade.StatusConformidadeId ="10";
         conformidade.DataEmissao = $("#data-emissao").val();
-        conformidade.Origem = $('#selectOrigem').selectpicker('val');
+        conformidade.OrigemConformidadeId = $('#selectOrigem').selectpicker('val');
         conformidade.Reincidente = $('#selectReincidente').selectpicker('val');
         conformidade.Requisito = $('#selectRequisito').selectpicker('val');
     
@@ -54,6 +55,42 @@
         //    Ocorreu = $("#causa-raiz-descritivo").val(),
         //    Quais=  $("#causa-raiz-quais").val()
         //});
+
+        let request = JSON.stringify(conformidade);
+
+
+            $.ajax({
+                type: "POST",
+                url: "salvar",
+                dataType: "json",
+                data: conformidade,
+                success: (data) => {
+                    if (data.StatusCode == 200) {
+                        let timerInterval; 
+                        Swal.fire({
+                            title: 'Bom trabalho!',
+                            html: 'Conformidade cadastrada com sucesso!',
+                            icon: 'success',
+                            timer: 6000,
+                            willClose: () => { 
+                                clearInterval(timerInterval)
+                                document.location.reload(true);
+                            },
+                            showCloseButton: true,
+                            focusConfirm: false
+                        })
+                    }
+                },
+                error: (data) => { 
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Ocorreu um erro na requisição, tente novamente mais tarde)' 
+                    }) 
+                }
+            }); 
+      
+        event.preventDefault(); 
     });
 
     function getValuesTableConformidadePendentes() {
@@ -75,6 +112,13 @@
         setTableEmpty();
          
         $("#data-acao-imediata").mask("99/99/9999");
+
+        //Swal.fire({
+        //    title: 'Error!',
+        //    text: 'Do you want to continue',
+        //    icon: 'error',
+        //    confirmButtonText: 'Cool'
+        //})
     };
 
     function setTableEmpty() {

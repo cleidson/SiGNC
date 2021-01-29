@@ -1,4 +1,5 @@
-﻿using SiGNC.Infra.Data.Dtos.Authorization;
+﻿
+using SiGNC.Core.Services.DTOs.Authorization;
 using SiGNC.Infra.Settings;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace SiGNC.Core.Services.Interfaces
     public interface IAuthorizationSiGncService
     {
         AuthenticateResponseDto Authenticate(AuthenticateRequestDto request);
+        Task<AuthenticateResponseDto> AuthenticateSync(AuthenticateRequestDto request);
         int GetById(int userId);
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SiGNC.Infra.Data.Dtos.Authorization
+namespace SiGNC.Core.Services.DTOs.Authorization
 {
     public class AuthenticateRequestDto
     {

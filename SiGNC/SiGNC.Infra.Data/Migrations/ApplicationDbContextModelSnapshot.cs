@@ -16,6 +16,7 @@ namespace SiGNC.Infra.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .UseIdentityColumns()
+                .HasAnnotation("Relational:Collation", "Latin1_General_CI_AS")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.2");
 
@@ -68,71 +69,6 @@ namespace SiGNC.Infra.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -215,6 +151,594 @@ namespace SiGNC.Infra.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AcaoCorretivaConformidade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("ConformidadeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DataLimite")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ResponsavelId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RiscoOportunidade")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int?>("TipoAcaoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConformidadeId");
+
+                    b.HasIndex("ResponsavelId");
+
+                    b.HasIndex("TipoAcaoId");
+
+                    b.ToTable("AcaoCorretivaConformidade");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sobrenome")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex(new[] { "NormalizedName" }, "RoleNameIndex")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex1")
+                        .HasFilter("([NormalizedName] IS NOT NULL)");
+
+                    b.ToTable("AspNetRole");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetRoleClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex(new[] { "RoleId" }, "IX_AspNetRoleClaims_RoleId")
+                        .HasDatabaseName("IX_AspNetRoleClaims_RoleId1");
+
+                    b.ToTable("AspNetRoleClaim");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex(new[] { "NormalizedEmail" }, "EmailIndex")
+                        .HasDatabaseName("EmailIndex1");
+
+                    b.HasIndex(new[] { "NormalizedUserName" }, "UserNameIndex")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex1")
+                        .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+                    b.ToTable("AspNetUser");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetUserClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex(new[] { "UserId" }, "IX_AspNetUserClaims_UserId")
+                        .HasDatabaseName("IX_AspNetUserClaims_UserId1");
+
+                    b.ToTable("AspNetUserClaim");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetUserLogin", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex(new[] { "UserId" }, "IX_AspNetUserLogins_UserId")
+                        .HasDatabaseName("IX_AspNetUserLogins_UserId1");
+
+                    b.ToTable("AspNetUserLogin");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetUserRole", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex(new[] { "RoleId" }, "IX_AspNetUserRoles_RoleId")
+                        .HasDatabaseName("IX_AspNetUserRoles_RoleId1");
+
+                    b.ToTable("AspNetUserRole");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetUserToken", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserToken");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.CausaRaizConformidade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("ConformidadeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(10)
+                        .HasColumnType("nchar(10)")
+                        .IsFixedLength(true);
+
+                    b.Property<string>("Nome")
+                        .HasMaxLength(10)
+                        .HasColumnType("nchar(10)")
+                        .IsFixedLength(true);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CausaRaizConformidade");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.Conformidade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime?>("DataCadastro")
+                        .HasColumnType("datetime");
+
+                    b.Property<int?>("OrigemConformidadeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ReincidenciaConformidadePaiId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reincidente")
+                        .HasMaxLength(1)
+                        .IsUnicode(false)
+                        .HasColumnType("char(1)")
+                        .IsFixedLength(true);
+
+                    b.Property<string>("Requisito")
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int?>("TipoConformidadeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsuarioGestorId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UsuarioSolicitanteId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrigemConformidadeId");
+
+                    b.HasIndex("ReincidenciaConformidadePaiId");
+
+                    b.HasIndex("TipoConformidadeId");
+
+                    b.HasIndex("UsuarioGestorId");
+
+                    b.HasIndex("UsuarioSolicitanteId");
+
+                    b.ToTable("Conformidade");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.ConformidadeHasCausaRaiz", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("CausaRaizConformidadeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ConformidadeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CausaRaizConformidadeId");
+
+                    b.HasIndex("ConformidadeId");
+
+                    b.ToTable("ConformidadeHasCausaRaiz");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.DetalhaConformidade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Abrangencia")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int?>("ConformidadeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(155)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(155)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConformidadeId");
+
+                    b.ToTable("DetalhaConformidade");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.DocumentoConformidade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("ConformidadeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DocumentoBase")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("PathDocumento")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConformidadeId");
+
+                    b.ToTable("DocumentoConformidade");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.ImplantarConformidade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("ConformidadeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ResponsavelId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("StatusConformidadeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConformidadeId");
+
+                    b.HasIndex("ResponsavelId");
+
+                    b.HasIndex("StatusConformidadeId");
+
+                    b.ToTable("ImplantarConformidade");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.OrigemConformidade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Nome")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrigemConformidade");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.StatusConformidade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Nome")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StatusConformidade");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.TipoAcao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Nome")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TipoAcao");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.TipoConformidade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Nome")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TipoConformidade");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -226,7 +750,7 @@ namespace SiGNC.Infra.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("SiGNC.Infra.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -235,7 +759,7 @@ namespace SiGNC.Infra.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("SiGNC.Infra.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -250,7 +774,7 @@ namespace SiGNC.Infra.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("SiGNC.Infra.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -259,11 +783,271 @@ namespace SiGNC.Infra.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("SiGNC.Infra.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AcaoCorretivaConformidade", b =>
+                {
+                    b.HasOne("SiGNC.Infra.Data.Models.Conformidade", "Conformidade")
+                        .WithMany("AcaoCorretivaConformidades")
+                        .HasForeignKey("ConformidadeId")
+                        .HasConstraintName("FK_AcaoCorretivaConformidade_Conformidade")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", "Responsavel")
+                        .WithMany("AcaoCorretivaConformidades")
+                        .HasForeignKey("ResponsavelId")
+                        .HasConstraintName("FK_AcaoCorretivaConformidade_AspNetUsers");
+
+                    b.HasOne("SiGNC.Infra.Data.Models.TipoAcao", "TipoAcao")
+                        .WithMany("AcaoCorretivaConformidades")
+                        .HasForeignKey("TipoAcaoId")
+                        .HasConstraintName("FK_AcaoCorretivaConformidade_TipoAcao")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Conformidade");
+
+                    b.Navigation("Responsavel");
+
+                    b.Navigation("TipoAcao");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetRoleClaim", b =>
+                {
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetRole", "Role")
+                        .WithMany("AspNetRoleClaims")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetUserClaim", b =>
+                {
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", "User")
+                        .WithMany("AspNetUserClaims")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetUserLogin", b =>
+                {
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", "User")
+                        .WithMany("AspNetUserLogins")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetUserRole", b =>
+                {
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetRole", "Role")
+                        .WithMany("AspNetUserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", "User")
+                        .WithMany("AspNetUserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetUserToken", b =>
+                {
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", "User")
+                        .WithMany("AspNetUserTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.Conformidade", b =>
+                {
+                    b.HasOne("SiGNC.Infra.Data.Models.OrigemConformidade", "OrigemConformidade")
+                        .WithMany("Conformidades")
+                        .HasForeignKey("OrigemConformidadeId")
+                        .HasConstraintName("FK_Conformidade_OrigemConformidade")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SiGNC.Infra.Data.Models.Conformidade", "ReincidenciaConformidadePai")
+                        .WithMany("InverseReincidenciaConformidadePai")
+                        .HasForeignKey("ReincidenciaConformidadePaiId")
+                        .HasConstraintName("FK_Conformidade_Conformidade");
+
+                    b.HasOne("SiGNC.Infra.Data.Models.TipoConformidade", "TipoConformidade")
+                        .WithMany("Conformidades")
+                        .HasForeignKey("TipoConformidadeId")
+                        .HasConstraintName("FK_Conformidade_TipoConformidade")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", "UsuarioGestor")
+                        .WithMany("ConformidadeUsuarioGestors")
+                        .HasForeignKey("UsuarioGestorId")
+                        .HasConstraintName("FK_Conformidade_AspNetUsers1");
+
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", "UsuarioSolicitante")
+                        .WithMany("ConformidadeUsuarioSolicitantes")
+                        .HasForeignKey("UsuarioSolicitanteId")
+                        .HasConstraintName("FK_Conformidade_AspNetUsers");
+
+                    b.Navigation("OrigemConformidade");
+
+                    b.Navigation("ReincidenciaConformidadePai");
+
+                    b.Navigation("TipoConformidade");
+
+                    b.Navigation("UsuarioGestor");
+
+                    b.Navigation("UsuarioSolicitante");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.ConformidadeHasCausaRaiz", b =>
+                {
+                    b.HasOne("SiGNC.Infra.Data.Models.CausaRaizConformidade", "CausaRaizConformidade")
+                        .WithMany("ConformidadeHasCausaRaizs")
+                        .HasForeignKey("CausaRaizConformidadeId")
+                        .HasConstraintName("FK_ConformidadeHasCausaRaiz_CausaRaizConformidade");
+
+                    b.HasOne("SiGNC.Infra.Data.Models.Conformidade", "Conformidade")
+                        .WithMany("ConformidadeHasCausaRaizs")
+                        .HasForeignKey("ConformidadeId")
+                        .HasConstraintName("FK_ConformidadeHasCausaRaiz_Conformidade");
+
+                    b.Navigation("CausaRaizConformidade");
+
+                    b.Navigation("Conformidade");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.DetalhaConformidade", b =>
+                {
+                    b.HasOne("SiGNC.Infra.Data.Models.Conformidade", "Conformidade")
+                        .WithMany("DetalhaConformidades")
+                        .HasForeignKey("ConformidadeId")
+                        .HasConstraintName("FK_DetalhaConformidade_Conformidade")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Conformidade");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.DocumentoConformidade", b =>
+                {
+                    b.HasOne("SiGNC.Infra.Data.Models.Conformidade", "Conformidade")
+                        .WithMany("DocumentoConformidades")
+                        .HasForeignKey("ConformidadeId")
+                        .HasConstraintName("FK_DocumentoConformidade_Conformidade")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Conformidade");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.ImplantarConformidade", b =>
+                {
+                    b.HasOne("SiGNC.Infra.Data.Models.Conformidade", "Conformidade")
+                        .WithMany("ImplantarConformidades")
+                        .HasForeignKey("ConformidadeId")
+                        .HasConstraintName("FK_ImplantacaoConformidade_Conformidade")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", "Responsavel")
+                        .WithMany("ImplantarConformidades")
+                        .HasForeignKey("ResponsavelId")
+                        .HasConstraintName("FK_ImplantarConformidade_AspNetUsers");
+
+                    b.HasOne("SiGNC.Infra.Data.Models.StatusConformidade", "StatusConformidade")
+                        .WithMany("ImplantarConformidades")
+                        .HasForeignKey("StatusConformidadeId")
+                        .HasConstraintName("FK_ImplantacaoConformidade_StatusConformidade")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Conformidade");
+
+                    b.Navigation("Responsavel");
+
+                    b.Navigation("StatusConformidade");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetRole", b =>
+                {
+                    b.Navigation("AspNetRoleClaims");
+
+                    b.Navigation("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetUser", b =>
+                {
+                    b.Navigation("AcaoCorretivaConformidades");
+
+                    b.Navigation("AspNetUserClaims");
+
+                    b.Navigation("AspNetUserLogins");
+
+                    b.Navigation("AspNetUserRoles");
+
+                    b.Navigation("AspNetUserTokens");
+
+                    b.Navigation("ConformidadeUsuarioGestors");
+
+                    b.Navigation("ConformidadeUsuarioSolicitantes");
+
+                    b.Navigation("ImplantarConformidades");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.CausaRaizConformidade", b =>
+                {
+                    b.Navigation("ConformidadeHasCausaRaizs");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.Conformidade", b =>
+                {
+                    b.Navigation("AcaoCorretivaConformidades");
+
+                    b.Navigation("ConformidadeHasCausaRaizs");
+
+                    b.Navigation("DetalhaConformidades");
+
+                    b.Navigation("DocumentoConformidades");
+
+                    b.Navigation("ImplantarConformidades");
+
+                    b.Navigation("InverseReincidenciaConformidadePai");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.OrigemConformidade", b =>
+                {
+                    b.Navigation("Conformidades");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.StatusConformidade", b =>
+                {
+                    b.Navigation("ImplantarConformidades");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.TipoAcao", b =>
+                {
+                    b.Navigation("AcaoCorretivaConformidades");
+                });
+
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.TipoConformidade", b =>
+                {
+                    b.Navigation("Conformidades");
                 });
 #pragma warning restore 612, 618
         }

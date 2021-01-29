@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SiGNC.Application.Web.NET5.Models.Autenticacao;
 using System;
@@ -10,18 +11,18 @@ namespace SiGNC.Application.Web.NET5.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize()]
+    [Authorize(Roles = "User")]
     public class TesteController : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return await Task.Run(() => View());
         }
 
 
-        [HttpGet] 
+        [HttpGet]
         [Route("getusuario")]
-        public IActionResult GetUsuarios()
+        public async Task<IActionResult> GetUsuarios()
         {
             var lista = new List<UsuarioViewModel>();
 
@@ -29,8 +30,7 @@ namespace SiGNC.Application.Web.NET5.Controllers
             {
                 lista.Add(new UsuarioViewModel { Id = i, Nome = "Usuario - " + i.ToString() });
             }
-
-            return Ok(lista);
-        }
+            return await Task.Run(() => Ok(lista)); 
+        } 
     }
 }
