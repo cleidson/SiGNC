@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SiGNC.Application.Web.NET5.Models.Conformidade;
+using SiGNC.Core.Services.Interfaces.Conformidade;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +19,22 @@ namespace SiGNC.Application.Web.NET5.Controllers
     public class ConformidadeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public ConformidadeController(ILogger<HomeController> logger)
+        private readonly IOrigemConformidadeService _origemService;
+        private readonly IStatusConformidadeService _statusConformidadeService;
+        private readonly ITipoAcaoConformidadeService _tipoAcaoConformidadeService;
+        private readonly IUsuarioConformidadeService _usuarioConformidadeService;
+        public ConformidadeController(ILogger<HomeController> logger,
+            IOrigemConformidadeService origemService,
+            IStatusConformidadeService statusConformidadeService,
+            ITipoAcaoConformidadeService tipoAcaoConformidadeService,
+             IUsuarioConformidadeService usuarioConformidadeService
+            )
         {
             _logger = logger;
+            _origemService = origemService;
+            _statusConformidadeService = statusConformidadeService;
+            _tipoAcaoConformidadeService = tipoAcaoConformidadeService;
+            _usuarioConformidadeService = usuarioConformidadeService;
         }
 
 
@@ -69,9 +82,51 @@ namespace SiGNC.Application.Web.NET5.Controllers
         [Route("salvar")]
         public async Task<HttpResponseMessage> SalvarConformidade(ConformidadeViewModel conformidade)
         {
-            return await Task.Run(() => new HttpResponseMessage() { StatusCode = (System.Net.HttpStatusCode)200 }); 
-           
+            return await Task.Run(() => new HttpResponseMessage() { StatusCode = (System.Net.HttpStatusCode)200 });
+
         }
+
+        [HttpGet("origem/list")]
+        [Route("origem/list")]
+        public async Task<JsonResult> GetOrigens()
+        {
+            var origens = (from or in await _origemService.GetOrigensConformidadeSync()
+                           select new OrigemConformidadeViewModel
+                           {
+                               Id = or.Id,
+                               Nome = or.Nome
+                           }).ToList();
+            return Json(origens);
+        }
+
+
+        [HttpGet("acao/tipo/list")]
+        [Route("acao/tipo/list")]
+        public async Task<JsonResult> GetTipoAcoesConformidade()
+        {
+            var tipoAcoes = (from or in await _tipoAcaoConformidadeService.GetTipoAcoesConformidadeSync()
+                           select new TipoAcaoViewModel
+                           {
+                               Id = or.Id,
+                               Nome = or.Nome
+                           }).ToList();
+            return Json(tipoAcoes);
+        }
+         
+        [HttpGet("usuario/search")]
+        [Route("usuario/search")]
+        public async Task<IActionResult> SearchUsers(string keyword)
+        {
+            var usuarios = (from user in await _usuarioConformidadeService.SearchUsuarios(keyword)
+                            select new UsuarioViewModel
+                            {
+                                Id = user.Id,
+                                Nome = user.Nome + " " + user.SobreNome
+                            }).ToList();
+            return Ok(usuarios);
+        }
+
+
 
 
         #region Ações corretivas
@@ -111,7 +166,7 @@ namespace SiGNC.Application.Web.NET5.Controllers
         public IActionResult DetalhaConformidade(int id)
         {
             return View();
-        } 
+        }
 
 
 

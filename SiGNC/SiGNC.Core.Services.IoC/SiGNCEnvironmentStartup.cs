@@ -32,7 +32,11 @@ namespace SiGNC.Core.Services.IoC
             services.AddScoped<IOrigemConformidadeService, OrigemConformidadeService>();
             services.AddScoped<IStatusConformidadeService, StatusConformidadeService>();
             services.AddScoped<ITipoAcaoConformidadeService, TipoAcaoConformidadeService>();
-            services.AddScoped<ITipoConformidadeService, TipoConformidadeService>();  
+            services.AddScoped<ITipoConformidadeService, TipoConformidadeService>();
+            services.AddScoped<IUsuarioConformidadeService, UsuarioConformidadeService>();
+
+
+            
         }
     }
 }

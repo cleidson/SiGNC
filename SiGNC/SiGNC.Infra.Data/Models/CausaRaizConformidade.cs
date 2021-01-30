@@ -12,8 +12,7 @@ namespace SiGNC.Infra.Data.Models
             ConformidadeHasCausaRaizs = new HashSet<ConformidadeHasCausaRaiz>();
         }
 
-        public int Id { get; set; }
-        public int? ConformidadeId { get; set; }
+        public int Id { get; set; } 
         public string Nome { get; set; }
         public string Descricao { get; set; }
 

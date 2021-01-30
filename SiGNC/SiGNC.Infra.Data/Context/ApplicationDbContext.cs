@@ -175,13 +175,13 @@ namespace SiGNC.Infra.Data.Context
             {
                 entity.ToTable("CausaRaizConformidade");
 
-                entity.Property(e => e.Descricao)
-                    .HasMaxLength(10)
-                    .IsFixedLength(true);
+                entity.Property(e => e.Descricao) 
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Nome)
-                    .HasMaxLength(10)
-                    .IsFixedLength(true);
+                entity.Property(e => e.Nome) 
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Conformidade>(entity =>
@@ -332,6 +332,10 @@ namespace SiGNC.Infra.Data.Context
             modelBuilder.Entity<StatusConformidade>(entity =>
             {
                 entity.ToTable("StatusConformidade");
+
+                entity.Property(e => e.Nome)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Nome)
                     .HasMaxLength(100)

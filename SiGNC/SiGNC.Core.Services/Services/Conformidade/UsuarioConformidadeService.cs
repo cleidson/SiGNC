@@ -14,36 +14,39 @@ using System.Threading.Tasks;
 
 namespace SiGNC.Core.Services.Services.Conformidade
 {
-    public class StatusConformidadeService : IStatusConformidadeService
+    public class UsuarioConformidadeService : IUsuarioConformidadeService
     {
-
         private readonly AppSettings _appSettings;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _db;
 
-        public StatusConformidadeService(IOptions<AppSettings> appSettings, ApplicationDbContext db, SignInManager<ApplicationUser> signInManager)
+        public UsuarioConformidadeService(IOptions<AppSettings> appSettings, ApplicationDbContext db, SignInManager<ApplicationUser> signInManager)
         {
             _appSettings = appSettings.Value;
             _db = db;
             _signInManager = signInManager;
-        } 
-        public Task<List<StatusConformidadeDto>> GetStatusConformidadeSync()
+        }
+
+        public Task<List<UsuarioDto>> SearchUsuarios(string keyword)
         {
             try
             {
-                var status = (from or in _db.StatusConformidades
-                               select new StatusConformidadeDto
-                               {
-                                   Id = or.Id,
-                                   Nome = or.Nome
-                               }).AsQueryable();
+                var users = (from user in _db.Users
+                             where user.Nome.Contains(keyword)
+                             select new UsuarioDto
+                             {
+                                 Id = user.Id,
+                                 Nome = user.Nome,
+                                 SobreNome = user.Sobrenome
+                             }).AsQueryable();
 
-                return status.ToListAsync();
+                return users.ToListAsync();
             }
             catch (Exception)
             {
                 throw;
             }
         }
+
     }
 }

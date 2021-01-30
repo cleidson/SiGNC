@@ -9,5 +9,6 @@ namespace SiGNC.Application.Web.NET5.Models.Conformidade
     {
         public string Id { get; set; }
         public string Nome { get; set; }
+        public string SobreNome { get; set; }
     }
 }

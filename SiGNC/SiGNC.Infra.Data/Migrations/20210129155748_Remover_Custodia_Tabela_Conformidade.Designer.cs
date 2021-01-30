@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiGNC.Infra.Data.Context;
 
 namespace SiGNC.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210129155748_Remover_Custodia_Tabela_Conformidade")]
+    partial class Remover_Custodia_Tabela_Conformidade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -469,14 +471,14 @@ namespace SiGNC.Infra.Data.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("Descricao")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nchar(10)")
+                        .IsFixedLength(true);
 
                     b.Property<string>("Nome")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nchar(10)")
+                        .IsFixedLength(true);
 
                     b.HasKey("Id");
 
@@ -681,9 +683,6 @@ namespace SiGNC.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
-
-                    b.Property<string>("Descricao")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
                         .HasMaxLength(100)

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace SiGNC.Core.Services.Interfaces.Conformidade
 {
-    public interface ITipoAcaoConformidadeService
+    public interface IUsuarioConformidadeService
     {
-        Task<List<TipoAcaoConformidadeDto>> GetTipoAcoesConformidadeSync();
+        Task<List<UsuarioDto>> SearchUsuarios(string keyword);
     }
 }

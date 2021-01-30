@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using SiGNC.Core.Services.DTOs.Conformidade;
 using SiGNC.Core.Services.Interfaces.Conformidade;
 using SiGNC.Infra.Data.Context;
 using SiGNC.Infra.Data.Models;
@@ -25,5 +27,23 @@ namespace SiGNC.Core.Services.Services.Conformidade
             _signInManager = signInManager;
         }
 
+        public Task<List<OrigemDto>> GetOrigensConformidadeSync()
+        {
+            try
+            {
+                var origens = (from or in _db.OrigemConformidades
+                               select new OrigemDto
+                               {
+                                   Id = or.Id,
+                                   Nome = or.Nome
+                               }).AsQueryable();
+
+                return origens.ToListAsync(); 
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

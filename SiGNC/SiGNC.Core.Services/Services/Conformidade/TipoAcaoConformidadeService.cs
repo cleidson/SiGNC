@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using SiGNC.Core.Services.DTOs.Conformidade;
 using SiGNC.Core.Services.Interfaces.Conformidade;
 using SiGNC.Infra.Data.Context;
 using SiGNC.Infra.Data.Models;
@@ -24,5 +26,24 @@ namespace SiGNC.Core.Services.Services.Conformidade
             _db = db;
             _signInManager = signInManager;
         }
+
+        public Task<List<TipoAcaoConformidadeDto>> GetTipoAcoesConformidadeSync()
+        {
+            try
+            {
+                var acoes = (from or in _db.TipoAcaos
+                               select new TipoAcaoConformidadeDto
+                               {
+                                   Id = or.Id,
+                                   Nome = or.Nome
+                               }).AsQueryable();
+
+                return acoes.ToListAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        } 
     }
 }

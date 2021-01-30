@@ -36,12 +36,11 @@
 
         conformidade.Eminente.Nome = $("#emitente").val();
         conformidade.NumeroConformidade = $("#numero-nao-conformidade").val();
-        conformidade.StatusConformidadeId ="10";
+        conformidade.StatusConformidadeId ="1";
         conformidade.DataEmissao = $("#data-emissao").val();
-        conformidade.OrigemConformidadeId = $('#selectOrigem').selectpicker('val');
-        conformidade.Reincidente = $('#selectReincidente').selectpicker('val');
-        conformidade.Requisito = $('#selectRequisito').selectpicker('val');
-    
+        conformidade.OrigemConformidadeId = $('#selectOrigem').val();
+        conformidade.Reincidente = $('#selectReincidente').val();  
+        conformidade.Requisito = $('#selectRequisito').selectpicker('val'); 
 
         conformidade.Detalhamentos = getValuesTableConformidadePendentes();
 
@@ -55,10 +54,7 @@
         //    Ocorreu = $("#causa-raiz-descritivo").val(),
         //    Quais=  $("#causa-raiz-quais").val()
         //});
-
-        let request = JSON.stringify(conformidade);
-
-
+         
             $.ajax({
                 type: "POST",
                 url: "salvar",
@@ -86,7 +82,8 @@
                         icon: 'error',
                         title: 'Oops...',
                         text: 'Ocorreu um erro na requisição, tente novamente mais tarde)' 
-                    }) 
+                    })
+                    console.table(data)
                 }
             }); 
       
@@ -106,20 +103,7 @@
         return tbl;
     };
 
-    function Init() {
-        $("#data-emissao").val(dataAtualFormatada);
-        $("#btnDeletarRow").hide();
-        setTableEmpty();
-         
-        $("#data-acao-imediata").mask("99/99/9999");
-
-        //Swal.fire({
-        //    title: 'Error!',
-        //    text: 'Do you want to continue',
-        //    icon: 'error',
-        //    confirmButtonText: 'Cool'
-        //})
-    };
+ 
 
     function setTableEmpty() {
         var markup = "<tr id='tr-blank'> <td colspan='3' class='text-center'>Não há detalhes de não conformidade</td></tr>";
@@ -220,6 +204,57 @@
         }
     });
 
+
+    function Init() {
+        GetOrigem();
+        GetTipoAcao() 
+        $("#data-emissao").val(dataAtualFormatada);
+        $("#btnDeletarRow").hide();
+        setTableEmpty();
+        $("#data-acao-imediata").mask("99/99/9999");
+    };
+
+    function GetOrigem() {
+        $.ajax({
+            type: "GET",
+            url: "origem/list",
+            success: (data) => {
+                $.each(data, function (key, value) {
+                    $("#selectOrigem").append('<option value=' + value.Id + '>' + value.Nome + '</option>');
+                    $("#selectOrigem").selectpicker('refresh');
+                });
+                console.table(data);
+            },
+            error: (data) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocorreu um erro na requisição, tente novamente mais tarde)'
+                })
+            }
+        });
+    }
+
+    function GetTipoAcao() {
+        $.ajax({
+            type: "GET",
+            url: "acao/tipo/list",
+            success: (data) => {
+                $.each(data, function (key, value) {
+                    $("#selectTipoAcao").append('<option value=' + value.Id + '>' + value.Nome + '</option>');
+                    $("#selectTipoAcao").selectpicker('refresh');
+                });
+                console.table(data);
+            },
+            error: (data) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocorreu um erro na requisição, tente novamente mais tarde)'
+                })
+            }
+        });
+    }
 
 
 

@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SiGNC.Core.Services.DTOs.Conformidade
-{
-    public class UsuarioDto
+{ 
+    public class TipoAcaoConformidadeDto
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Nome { get; set; }
-        public string SobreNome { get; set; }
+
     }
 }

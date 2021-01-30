@@ -14,6 +14,7 @@ namespace SiGNC.Infra.Data.Models
 
         public int Id { get; set; }
         public string Nome { get; set; }
+        public string Descricao { get; set; }
 
         public virtual ICollection<ImplantarConformidade> ImplantarConformidades { get; set; }
     }
