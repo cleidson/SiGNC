@@ -28,6 +28,6 @@ namespace SiGNC.Application.Web.NET5.Models.Conformidade
         public OrigemConformidadeViewModel OrigemConformidade { get; set; }
         public List<DetalhaConformidadeViewModel> Detalhamentos { get; set; }
         public AcaoCorretivaViewModel AcaoCorretiva { get; set; }
-        public List<CausaRaizConformidadeViewModel> CausaRaizes { get; set; } 
+        public List<CausaRaizHasConformidadeViewModel> CausaRaizes { get; set; } 
     }
 }

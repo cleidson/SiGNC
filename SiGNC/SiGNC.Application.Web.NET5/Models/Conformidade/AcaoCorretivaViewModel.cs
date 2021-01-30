@@ -9,6 +9,7 @@ namespace SiGNC.Application.Web.NET5.Models.Conformidade
     {
         public int Id { get; set; }
         public string Descricao { get; set; }
+        public string RiscoOportunidade { get; set; } 
         public string DataImplantacao { get; set; }
         public UsuarioViewModel Responsavel { get; set; }
     }

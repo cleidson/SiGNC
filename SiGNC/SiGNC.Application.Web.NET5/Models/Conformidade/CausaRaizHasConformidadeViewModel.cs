@@ -10,7 +10,7 @@ namespace SiGNC.Application.Web.NET5.Models.Conformidade
         public int Id { get; set; }
         public int ConformidadeId { get; set; }
         public int CausaRaizConformidadeId { get; set; }
-        public bool Ocorreu { get; set; }
+        public string Ocorreu { get; set; }
         public string Quais { get; set; }
     }
 }
