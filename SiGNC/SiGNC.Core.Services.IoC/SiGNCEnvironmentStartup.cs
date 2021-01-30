@@ -34,9 +34,7 @@ namespace SiGNC.Core.Services.IoC
             services.AddScoped<ITipoAcaoConformidadeService, TipoAcaoConformidadeService>();
             services.AddScoped<ITipoConformidadeService, TipoConformidadeService>();
             services.AddScoped<IUsuarioConformidadeService, UsuarioConformidadeService>();
-
-
-            
+            services.AddScoped<ICausaRaizConformidadeService, CausaRaizConformidadeService>(); 
         }
     }
 }

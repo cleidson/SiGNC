@@ -23,11 +23,15 @@ namespace SiGNC.Application.Web.NET5.Controllers
         private readonly IStatusConformidadeService _statusConformidadeService;
         private readonly ITipoAcaoConformidadeService _tipoAcaoConformidadeService;
         private readonly IUsuarioConformidadeService _usuarioConformidadeService;
-        public ConformidadeController(ILogger<HomeController> logger,
+        private readonly ICausaRaizConformidadeService _causaRaizConformidadeService;
+
+        public ConformidadeController(
+            ILogger<HomeController> logger,
             IOrigemConformidadeService origemService,
             IStatusConformidadeService statusConformidadeService,
             ITipoAcaoConformidadeService tipoAcaoConformidadeService,
-             IUsuarioConformidadeService usuarioConformidadeService
+            IUsuarioConformidadeService usuarioConformidadeService,
+            ICausaRaizConformidadeService causaRaizConformidadeService
             )
         {
             _logger = logger;
@@ -35,6 +39,7 @@ namespace SiGNC.Application.Web.NET5.Controllers
             _statusConformidadeService = statusConformidadeService;
             _tipoAcaoConformidadeService = tipoAcaoConformidadeService;
             _usuarioConformidadeService = usuarioConformidadeService;
+            _causaRaizConformidadeService = causaRaizConformidadeService;
         }
 
 
@@ -105,19 +110,39 @@ namespace SiGNC.Application.Web.NET5.Controllers
         public async Task<JsonResult> GetTipoAcoesConformidade()
         {
             var tipoAcoes = (from or in await _tipoAcaoConformidadeService.GetTipoAcoesConformidadeSync()
-                           select new TipoAcaoViewModel
-                           {
-                               Id = or.Id,
-                               Nome = or.Nome
-                           }).ToList();
+                             select new TipoAcaoViewModel
+                             {
+                                 Id = or.Id,
+                                 Nome = or.Nome
+                             }).ToList();
             return Json(tipoAcoes);
         }
-         
-        [HttpGet("usuario/search")]
-        [Route("usuario/search")]
-        public async Task<IActionResult> SearchUsers(string keyword)
+
+
+        [HttpGet("causaraiz/list")]
+        [Route("causaraiz/list")]
+        public async Task<JsonResult> GetCausasRaize()
         {
-            var usuarios = (from user in await _usuarioConformidadeService.SearchUsuarios(keyword)
+            var causaRaizes = (from cr in await _causaRaizConformidadeService.GetCausaRaizConformidade()
+                             select new CausaRaizConformidadeViewModel
+                             {
+                                 Id = cr.Id,
+                                 Nome = cr.Nome,
+                                 Descricao = cr.Descricao
+                                 
+                             }).ToList();
+            return Json(causaRaizes);
+        }
+
+
+
+        [HttpPost("usuario/search")]
+        [Route("usuario/search")]
+        public async Task<IActionResult> SearchUsers(string term)
+        {
+
+            //string term = HttpContext.Request.Query["term"].ToString();
+            var usuarios = (from user in await _usuarioConformidadeService.SearchUsuarios(term)
                             select new UsuarioViewModel
                             {
                                 Id = user.Id,

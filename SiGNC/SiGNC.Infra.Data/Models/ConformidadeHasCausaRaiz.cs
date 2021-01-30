@@ -10,8 +10,8 @@ namespace SiGNC.Infra.Data.Models
         public int Id { get; set; }
         public int? ConformidadeId { get; set; }
         public int? CausaRaizConformidadeId { get; set; }
-        public string Descricao { get; set; }
-
+        public bool Ocorreu { get; set; }
+        public string Quais { get; set; } 
         public virtual CausaRaizConformidade CausaRaizConformidade { get; set; }
         public virtual Conformidade Conformidade { get; set; }
     }

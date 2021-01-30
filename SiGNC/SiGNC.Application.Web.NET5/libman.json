@@ -25,6 +25,6 @@
     {
       "library": "limonte-sweetalert2@10.14.0",
       "destination": "wwwroot/lib/limonte-sweetalert2/"
-    }
+    } 
   ]
 }

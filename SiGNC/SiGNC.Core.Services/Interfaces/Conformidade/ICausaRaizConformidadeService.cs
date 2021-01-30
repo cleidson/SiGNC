@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SiGNC.Core.Services.DTOs.Conformidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace SiGNC.Core.Services.Interfaces.Conformidade
 {
     public interface ICausaRaizConformidadeService
     {
+        Task<List<CausaRaizConformidadeDto>> GetCausaRaizConformidade();
     }
 }

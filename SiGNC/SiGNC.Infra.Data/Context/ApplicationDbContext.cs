@@ -235,7 +235,7 @@ namespace SiGNC.Infra.Data.Context
             {
                 entity.ToTable("ConformidadeHasCausaRaiz");
 
-                entity.Property(e => e.Descricao)
+                entity.Property(e => e.Quais)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 

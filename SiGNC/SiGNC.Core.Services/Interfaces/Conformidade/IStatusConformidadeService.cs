@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 namespace SiGNC.Core.Services.Interfaces.Conformidade
 {
     public interface IStatusConformidadeService
-    {
-
+    { 
         Task<List<StatusConformidadeDto>> GetStatusConformidadeSync();
     }
 }

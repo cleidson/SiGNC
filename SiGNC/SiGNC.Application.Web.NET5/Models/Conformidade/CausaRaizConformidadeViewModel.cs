@@ -8,7 +8,7 @@ namespace SiGNC.Application.Web.NET5.Models.Conformidade
     public class CausaRaizConformidadeViewModel
     {
         public int Id { get; set; }
-        public bool Ocorreu { get; set; }
-        public string Quais { get; set; }
+        public string Nome { get; set; }
+        public string Descricao { get; set; }
     }
 }
