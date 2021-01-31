@@ -493,7 +493,7 @@
                         $('<td>').text(item.NumeroConformidade),
                         $('<td>').text(item.DataEmissao),
                         $('<td>').text(item.UsuarioEmitente),
-                        $('<td data-id="' + item.IdStatusConformidade+'" >').text(item.DescricaoStatusConformidade)
+                        $('<td data-id="' + item.IdStatusConformidade +'" style="text-align:center" >').text(item.DescricaoStatusConformidade)
                     ).appendTo('#table-conformidades-pendentes');
                 });
             },

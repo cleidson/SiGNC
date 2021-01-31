@@ -31,30 +31,30 @@ namespace SiGNC.Core.Services.Services.Conformidade
         {
             throw new NotImplementedException();
         }
-         
-        public Task<List<ConformidadeDto>> GetConformidades()
+
+        public Task<List<ConformidadeDto>> GetConformidadesSync()
         {
             try
-            { 
-                var conformidades = (from or in _db.Conformidades 
+            {
+                var conformidades = (from or in _db.Conformidades
                                      where or.StatusConformidadeId == 1
-                               select new ConformidadeDto
-                               {
-                                   Id = or.Id,
-                                   UsuarioSolicitante = new UsuarioDto
-                                   {
-                                       Id = or.UsuarioSolicitanteId,
-                                       Nome = or.UsuarioSolicitante.Nome
-                                   },
-                                   NumeroConformidade = or.NumeroConformidade,
-                                   StatusConformidade = new StatusConformidadeDto
-                                   {
-                                    Id = or.StatusConformidade.Id,
-                                    Nome = or.StatusConformidade.Nome
-                                   
-                                   },
-                                   DataEmissao = or.DataCadastro.Value.ToString("dd/MM/yyyy")
-                               }) .AsQueryable();
+                                     select new ConformidadeDto
+                                     {
+                                         Id = or.Id,
+                                         UsuarioSolicitante = new UsuarioDto
+                                         {
+                                             Id = or.UsuarioSolicitanteId,
+                                             Nome = or.UsuarioSolicitante.Nome
+                                         },
+                                         NumeroConformidade = or.NumeroConformidade,
+                                         StatusConformidade = new StatusConformidadeDto
+                                         {
+                                             Id = or.StatusConformidade.Id,
+                                             Nome = or.StatusConformidade.Nome
+
+                                         },
+                                         DataEmissao = or.DataCadastro.Value.ToString("dd/MM/yyyy")
+                                     }).AsQueryable();
 
                 return conformidades.ToListAsync();
             }
@@ -64,7 +64,70 @@ namespace SiGNC.Core.Services.Services.Conformidade
             }
         }
 
-        public async  Task<bool> GetNumConformidade(string numConformidade)
+        public Task<ConformidadeDto> GetConformidadeSync(int id)
+        {
+            try
+            {
+
+                var conformidades = (from conformidade in _db.Conformidades
+                                     where conformidade.Id == id
+                                     select new ConformidadeDto
+                                     {
+                                         OrigemConformidadeId = conformidade.OrigemConformidadeId.ToString(),
+                                         OrigemConformidade = new OrigemDto { Id = conformidade.OrigemConformidade.Id, Nome = conformidade.OrigemConformidade.Nome },
+                                         StatusConformidadeId = conformidade.StatusConformidadeId.ToString(),
+                                         StatusConformidade = new StatusConformidadeDto { Id = conformidade.StatusConformidade.Id, Nome = conformidade.StatusConformidade.Nome },
+                                         UsuarioSolicitanteId = conformidade.UsuarioSolicitanteId,
+                                         UsuarioSolicitante = new UsuarioDto { Id = conformidade.UsuarioSolicitante.Id, Nome = conformidade.UsuarioSolicitante.Nome + "" + conformidade.UsuarioSolicitante.Sobrenome },
+                                         UsuarioGestorId = conformidade.UsuarioGestorId,
+                                         UsuarioGestor = new UsuarioDto { Id = conformidade.UsuarioGestor.Id, Nome = conformidade.UsuarioGestor.Nome + "" + conformidade.UsuarioGestor.Sobrenome },
+                                         TipoConformidadeId = conformidade.TipoConformidadeId.ToString(),
+                                         Reincidente = conformidade.Reincidente,
+                                         Requisito = conformidade.Requisito,
+                                         NumeroConformidade = conformidade.NumeroConformidade,
+                                         DataEmissao = conformidade.DataCadastro.Value.ToString("dd/MM/yyyy"),
+                                         AcaoCorretiva = (from acao in conformidade.AcaoCorretivaConformidades
+                                                          select new AcaoCorretivaConformidadeDto
+                                                          {
+                                                              Responsavel = new UsuarioDto { Nome = acao.Responsavel.Nome + "" + acao.Responsavel.Sobrenome },
+                                                              DataImplantacao = acao.DataLimite.Value.ToString("dd/MM/yyyy"),
+                                                              Descricao = acao.Descricao,
+                                                              RiscoOportunidade = acao.RiscoOportunidade,
+                                                              TipoAcaoNome = acao.TipoAcao.Nome,
+                                                              TipoAcaoId = acao.TipoAcao.Id
+                                                          }
+                                        ).FirstOrDefault(),
+                                         Detalhamentos = (from dt in conformidade.DetalhaConformidades
+                                                          select new DetalhaConformidadeDto
+                                                          {
+                                                              Descricao = dt.Descricao,
+                                                              Detalhamento = dt.Abrangencia,
+                                                              Id = dt.Id
+                                                          }).ToList(),
+                                         CausaRaizes = (from cr in conformidade.ConformidadeHasCausaRaizs
+                                                        select new ConformidadeHasCausaRaizDto
+                                                        {
+                                                            Id = cr.Id,
+                                                            ConformidadeId = (int)cr.ConformidadeId,
+                                                            CausaRaizConformidadeId = cr.Id,
+                                                            CausaRaizId = cr.CausaRaizConformidade.Id,
+                                                            CausaRaizDescricao = cr.CausaRaizConformidade.Descricao,
+                                                            Ocorreu = cr.Ocorreu,
+                                                            OcorreuFormated = cr.Ocorreu == true ? "Sim" : "Nao",
+                                                            Quais = cr.Quais == null ? "" : cr.Quais
+                                                        }).ToList()
+                                     }
+                          ).AsQueryable();
+
+                return conformidades.FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<bool> GetNumConformidade(string numConformidade)
         {
             try
             {
@@ -77,7 +140,7 @@ namespace SiGNC.Core.Services.Services.Conformidade
             }
         }
 
-        public async Task<bool> SalvarConformidade(ConformidadeDto conformidade)
+        public async Task<bool> SalvarConformidadeSync(ConformidadeDto conformidade)
         {
             try
             {
@@ -96,31 +159,31 @@ namespace SiGNC.Core.Services.Services.Conformidade
                         DataCadastro = DateTime.Parse(conformidade.DataEmissao),
                         AcaoCorretivaConformidades = new List<AcaoCorretivaConformidade>{
                             new AcaoCorretivaConformidade
-                            { 
+                            {
                                  ResponsavelId = conformidade.AcaoCorretiva.Responsavel.Id,
-                                 DataLimite = DateTime.Parse(conformidade.AcaoCorretiva.DataImplantacao), 
+                                 DataLimite = DateTime.Parse(conformidade.AcaoCorretiva.DataImplantacao),
                                  Descricao = conformidade.AcaoCorretiva.Descricao,
                                  RiscoOportunidade = conformidade.AcaoCorretiva.RiscoOportunidade,
                                  TipoAcaoId  = conformidade.AcaoCorretiva.Id
                             }
                         },
-                        DetalhaConformidades =  (from dt in conformidade.Detalhamentos
-                                         select new DetalhaConformidade
-                                         {
-                                             Descricao = dt.Descricao,
-                                             Abrangencia = dt.Detalhamento
-                                         }).ToList(),
+                        DetalhaConformidades = (from dt in conformidade.Detalhamentos
+                                                select new DetalhaConformidade
+                                                {
+                                                    Descricao = dt.Descricao,
+                                                    Abrangencia = dt.Detalhamento
+                                                }).ToList(),
                         ConformidadeHasCausaRaizs = (from cr in conformidade.CausaRaizes
-                                       select new ConformidadeHasCausaRaiz
-                                       {
-                                           CausaRaizConformidadeId = cr.CausaRaizConformidadeId,
-                                           Ocorreu = cr.Ocorreu,
-                                           Quais = cr.Quais
-                                       }).ToList()
+                                                     select new ConformidadeHasCausaRaiz
+                                                     {
+                                                         CausaRaizConformidadeId = cr.CausaRaizConformidadeId,
+                                                         Ocorreu = cr.Ocorreu,
+                                                         Quais = cr.Quais
+                                                     }).ToList()
                     };
 
                     _db.Conformidades.Add(data);
-                    var result =  _db.SaveChanges() > 0;
+                    var result = _db.SaveChanges() > 0;
                     await _db.DisposeAsync();
 
                     return result;

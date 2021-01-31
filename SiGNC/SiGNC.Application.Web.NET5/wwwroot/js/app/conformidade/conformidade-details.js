@@ -1,5 +1,4 @@
 ﻿(function () {
-
     let conformidade = {
         Eminente: "",
         NumeroConformidade: "",
@@ -28,109 +27,171 @@
         ]
     };
 
-    $("#btn-salvar-conformidade").click(function (event) {
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
-        conformidade.Eminente = $("#emitente").val();
-        conformidade.NumeroConformidade = $("#numero-nao-conformidade").val();
-        conformidade.Status = "Novo";
-        conformidade.DataEmissao = $("#data-emissao").val();
-        conformidade.Origem = $('#selectOrigem').selectpicker('val');
-        conformidade.Reincidente = $('#selectReincidente').selectpicker('val');
-        conformidade.Requisito = $('#selectRequisito').selectpicker('val');
+    async function demo() {
+        console.log('Taking a break...');
+        await sleep(7000);
+        console.log('Two seconds later, showing sleep in a loop...');
+
+     
+        // Sleep in loop
+        for (let i = 0; i < 5; i++) {
+            if (i === 3)
+                await sleep(2000);
+            console.log(i);
+        }
+    }
 
 
-        conformidade.Detalhamentos = getValuesTableConformidadePendentes();
-
-        conformidade.AcaoCorretiva.Descricao = $("#acao-imediata-descricao").val();
-        conformidade.AcaoCorretiva.DataImplatacao = $("#data-acao-imediata").val();
-        conformidade.AcaoCorretiva.Responsavel = $("#responsavel-acao-imediata").val();
-
-        console.table(conformidade);
-        //conformidade.CausaRaizes.push({
-        //    //Id =  $("#causa-raiz-id").val(),
-        //    Ocorreu = $("#causa-raiz-descritivo").val(),
-        //    Quais=  $("#causa-raiz-quais").val()
-        //});
-    });
-
-    function getValuesTableConformidadePendentes() {
-        var tbl = $('#table-detalhamento tr:has(td)').map(function (i, v) {
-            var $td = $('td', this);
-            return {
-                id: ++i,
-                descricao: $td.eq(1).text(),
-                detalhamento: $td.eq(2).text()
-            }
-        }).get();
-
-        return tbl;
-    };
 
     function Init() {
-
-        $("#form-detalha-conformidade :input").attr("disabled", "disabled"); 
-
-
-        $("#form-detalha-conformidade :button").attr("hidden", "hidden"); 
-
-
+        GetTipoAcao();
+        GetOrigem(); 
+        GetStatus();
+        loadData();
+        $("#form-detalha-conformidade :input").attr("disabled", "disabled");
+        $("#form-detalha-conformidade :button").attr("hidden", "hidden");
         $("#data-emissao").val(dataAtualFormatada);
         $("#btnDeletarRow").hide();
-        setTableEmpty();
-
         $("#data-acao-imediata").mask("99/99/9999");
     };
 
-    function setTableEmpty() {
-        var markup = "<tr id='tr-blank'> <td colspan='3' class='text-center'>Não há detalhes de não conformidade</td></tr>";
-        $("#table-detalhamento tbody").append(markup);
 
-    }
+    function loadData() {
+        var idRequest = $("#ConformidadeHiddenId").val();
 
-    $("#adicionar-detalhamento-naoconformidade").click(function (event) {
+        $.ajax({
+            url: '/detalhe',
+            type: "POST",
+            dataType: "json",
+            data: { requestId: idRequest },
+            success: function (data) { 
 
-        if ($("#descricao-detalhamento-nao-conformidade").val() == "" || $("#detalhamento-nao-conformidade").val() == "") {
+                $("#emitente").val(data.UsuarioSolicitante.Nome);
 
-            if ($("#descricao-detalhamento-nao-conformidade").val() == "") {
 
-                $("#descricao-detalhamento-nao-conformidade").addClass('is-invalid');
-            }
+                $("#numero-nao-conformidade").val(data.NumeroConformidade);
+                $("#data-emissao").val(data.DataEmissao);
+                $('#selectOrigem').val(data.OrigemConformidade.Id);
+                $('#selectStatus').val(data.StatusConformidade.Id);
+                $('#selectReincidente').val(data.Reincidente.trim());
+                $('#selectRequisito').val(data.Requisito.trim());
 
-            if ($("#detalhamento-nao-conformidade").val() == "") {
 
-                $("#detalhamento-nao-conformidade").addClass('is-invalid');
-            }
-        } else {
-            $("#tr-blank").remove();
-            var descricao = $("#descricao-detalhamento-nao-conformidade").val();
-            var detalhamento = $("#detalhamento-nao-conformidade").val();
-            var markup = "<tr><td><input type='checkbox' name='record'></td><td>" + descricao + "</td><td>" + detalhamento + "</td></tr>";
-            $("#table-detalhamento tbody").append(markup);
+                $('#selectStatus').selectpicker('refresh');
+                $("#selectOrigem").selectpicker('refresh');
+                $("#selectReincidente").selectpicker('refresh');
+                $("#selectRequisito").selectpicker('refresh'); 
 
-            $("#descricao-detalhamento-nao-conformidade").val("");
-            $("#detalhamento-nao-conformidade").val("");
+                $.each(data.Detalhamentos, function (key, item) {
 
-            $("#descricao-detalhamento-nao-conformidade").removeClass('is-valid');
-            $("#detalhamento-nao-conformidade").removeClass('is-valid');
+                    var $tr = $('<tr data-id="' + item.Id + '">').append(
+                        $('<td>').text(item.Id),
+                        $('<td>').text(item.Descricao),
+                        $('<td>').text(item.Detalhamento)
+                    ).appendTo("#table-detalhamento");
+                });
 
-            $("#btnDeletarRow").show();
-        }
+                $.each(data.CausaRaizes, function (key, item) {
 
-    });
+                    var $tr = $('<tr data-id="' + item.Id + '">').append(
+                        $('<td>').text(item.CausaRaizId),
+                        $('<td>').html('<input type="text" class="form-control" id="causa-raiz-descritivo-' + item.CausaRaizId + '" disabled placeholder="' + item.CausaRaizDescricao + '" />'),
+                        $('<td>').html('<select class=" form-control"  title="Ocorreu?" disabled  id="causa-raiz-ocorreu-' + item.Id + '"><option value="Sim">Sim</option><option value="Não">Não</option></select>'),
+                        $('<td>').html(' <input type="text" class="form-control" id="causa-raiz-quais' + item.CausaRaizId + '" disabled placeholder='+ item.Quais + ' >'),
+                    ).appendTo('#table-cr'); 
+                     
+                    $("#causa-raiz-ocorreu-" + item.Id).val(item.OcorreuFormated);
+                    
+                });
 
-    $("#delete-row").click(function () {
-        $("#table-detalhamento tbody").find('input[name="record"]').each(function () {
-            if ($(this).is(":checked")) {
-                $(this).parents("tr").remove();
-                if ($("#table-detalhamento tbody").children('tr').length == 0) {
-                    setTableEmpty();
-                    $("#btnDeletarRow").hide();
-                }
+                //Ação Corretiva
+                $("#acao-imediata-descricao").val(data.AcaoCorretiva.Descricao);
+                $("#data-acao-imediata").val(data.AcaoCorretiva.DataImplantacao);
+                $("#acao-imediata-riscoOportunidade").val(data.AcaoCorretiva.RiscoOportunidade);
+                $('#selectTipoAcao').val(data.AcaoCorretiva.TipoAcaoId); 
+                $('#selectTipoAcao').selectpicker('refresh');
+
+                $("#responsavel-acao-imediata").val(data.UsuarioGestor.Nome);
+
+
+                console.log(data);
+            },
+            error: (data) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocorreu um erro na requisição, tente novamente mais tarde)'
+                })
             }
         });
-    });
 
+    }
+    function GetTipoAcao() {
+        $.ajax({
+            type: "GET",
+            url: "/acao/tipo/list",
+            success: (data) => {
+                $.each(data, function (key, value) {
+                    $("#selectTipoAcao").append('<option value=' + value.Id + '>' + value.Nome + '</option>');
+                    $("#selectTipoAcao").selectpicker('refresh');
+                });
+                console.table(data);
+            },
+            error: (data) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocorreu um erro na requisição, tente novamente mais tarde)'
+                })
+            }
+        });
+    }
 
+    function GetStatus() {
+        $.ajax({
+            type: "GET",
+            url: "/status/list",
+            success: (data) => {
+                $.each(data, function (key, value) {
+                    $("#selectStatus").append('<option value=' + value.Id + '>' + value.Nome + '</option>');
+                    $("#selectStatus").selectpicker('refresh');
+                });
+                console.table(data);
+            },
+            error: (data) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocorreu um erro na requisição, tente novamente mais tarde)'
+                })
+            }
+        });
+    }
+
+    function GetOrigem() {
+        $.ajax({
+            type: "GET",
+            url: "/origem/list",
+            success: (data) => {
+                $.each(data, function (key, value) {
+                    $("#selectOrigem").append('<option value=' + value.Id + '>' + value.Nome + '</option>');
+                    $("#selectOrigem").selectpicker('refresh');
+                });
+                console.table(data);
+            },
+            error: (data) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocorreu um erro na requisição, tente novamente mais tarde)'
+                })
+            }
+        });
+    }
 
     function dataAtualFormatada() {
         var data = new Date(),
@@ -141,69 +202,6 @@
             anoF = data.getFullYear();
         return diaF + "/" + mesF + "/" + anoF;
     }
-
-
-    //######################################################### REGRA DE INPUT ###############################################
-    //## DESCRICAO
-    $("input[name=descricao-detalhamento-nao-conformidade]").hover(
-        function () {
-            if (!$("#descricao-detalhamento-nao-conformidade").val() == "") {
-                $("#descricao-detalhamento-nao-conformidade").removeClass('is-invalid');
-            }
-        }
-    );
-
-    $('input[name=descricao-detalhamento-nao-conformidade]').change(function () {
-        if ($("#descricao-detalhamento-nao-conformidade").val() == "") {
-            $("#descricao-detalhamento-nao-conformidade").addClass('is-invalid');
-        } else {
-            $("#descricao-detalhamento-nao-conformidade").removeClass('is-invalid');
-            $("#descricao-detalhamento-nao-conformidade").addClass('is-valid');
-        }
-    });
-
-    // ## DETALHA
-    $("textarea[name=detalhamento-nao-conformidade]").hover(
-        function () {
-            if (!$("#detalhamento-nao-conformidade").val() == "") {
-                $("#detalhamento-nao-conformidade").removeClass('is-invalid');
-            }
-        }
-    );
-
-    $('textarea[name=detalhamento-nao-conformidade]').change(function () {
-        if ($("#detalhamento-nao-conformidade").val() == "") {
-            $("#detalhamento-nao-conformidade").addClass('is-invalid');
-        } else {
-            $("#detalhamento-nao-conformidade").removeClass('is-invalid');
-            $("#detalhamento-nao-conformidade").addClass('is-valid');
-        }
-    });
-
-
-
-
-
-
-    jQuery.extend(jQuery.validator.messages, {
-        required: "O campo é obrigatório",
-        remote: "Please fix this field.",
-        email: "Please enter a valid email address.",
-        url: "Please enter a valid URL.",
-        date: "Please enter a valid date.",
-        dateISO: "Please enter a valid date (ISO).",
-        number: "Please enter a valid number.",
-        digits: "Please enter only digits.",
-        creditcard: "Please enter a valid credit card number.",
-        equalTo: "Please enter the same value again.",
-        accept: "Please enter a value with a valid extension.",
-        maxlength: jQuery.validator.format("Please enter no more than {0} characters."),
-        minlength: jQuery.validator.format("Please enter at least {0} characters."),
-        rangelength: jQuery.validator.format("Please enter a value between {0} and {1} characters long."),
-        range: jQuery.validator.format("Please enter a value between {0} and {1}."),
-        max: jQuery.validator.format("Please enter a value less than or equal to {0}."),
-        min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
-    });
 
     Init();
 })(jQuery)

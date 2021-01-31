@@ -71,16 +71,76 @@
         return tbl;
     };
 
+
     $("#btn-cancelar-conformidade").click(() => {
 
         $("#block-cadastro").attr("hidden", "hidden"); 
 
     });
 
+    $("#btn-editar-conformidade").click(function () {
+        var $row = $(this).closest("tr");    // Find the row
+        var $text = $row.find(".nr").text(); // Find the text
+
+        // Let's test it out
+        alert($text);
+    });
+
+    $("#btn-editar-conformidade").click(function () {
+        var $row = $(this).closest("tr");    // Find the row
+        var $text = $row.find(".nr").text(); // Find the text
+
+        // Let's test it out
+        alert($text);
+    });
+
+    function GetConformidades() {
+        $.ajax({
+            type: "GET",
+            url: "conformidade/list",
+            success: (data) => {
+                $.each(data, function (key, item) {
+
+                    var $tr = $('<tr data-id="' + item.Id + '">').append(
+                        $('<td>').text(item.Id),
+                        $('<td>').text(item.NumeroConformidade),
+                        $('<td>').text(item.DataEmissao),
+                        $('<td>').text(item.UsuarioEmitente),
+                        $('<td data-id="' + item.IdStatusConformidade + '" style="text-align:center" >').text(item.DescricaoStatusConformidade),
+                        $('<td>').html('<a class="text-muted pointer  text-center" onClick="Edit(' + item.Id + ')" data-toggle="tooltip" data-html="true" title="Editar" id="btn-editar-conformidade"> <span data-feather="edit">Editar</span> </a> <a  class="text-muted pointer margin-left-5px text-center"   onClick="Details('+ item.Id +')"    data-toggle="tooltip" data-html="true" title="Visualizar"><span data-feather="eye">Visualizar</span></a>'),
+                    
+                         
 
 
+
+                    //    < td colspan = "2" > 
+                    //    <a class="text-muted pointer" data-toggle="tooltip" data-html="true" title="Editar" id="btn-editar-conformidade">
+                    //        <span data-feather="edit"></span>
+                    //    </a>
+                    //    <a class="text-muted  margin-left-5px" asp-controller="Conformidade" asp-action="DetalhaConformidade" asp-route-id="10" data-toggle="tooltip" data-html="true" title="Visualizar">
+                    //        <span data-feather="eye"></span>
+                    //    </a>
+                    //</td >
+
+
+
+                    ).appendTo('#table-conformidades-pendentes');
+                });
+            },
+            error: (data) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocorreu um erro na requisição, tente novamente mais tarde)'
+                })
+            }
+        });
+    }
+
+     
     function Init() {
-
+       
+        GetConformidades();
         $("#block-cadastro").attr("hidden", "hidden"); 
 
 
@@ -189,12 +249,7 @@
             $("#detalhamento-nao-conformidade").addClass('is-valid');
         }
     });
-
-
-
-
-
-
+     
     jQuery.extend(jQuery.validator.messages, {
         required: "O campo é obrigatório",
         remote: "Please fix this field.",
@@ -217,3 +272,47 @@
 
     Init();
 })(jQuery)
+
+function Edit(Id) {
+    console.log(Id);
+}
+
+//function Details(Id) {
+//    $.ajax({
+//        url: 'usuario/search',
+//        type: "POST",
+//        dataType: "json",
+//        data: { id: Id },
+
+//        success: function (data) {
+//            console.log(data);
+//        },
+//        error: (data) => {
+//            Swal.fire({
+//                icon: 'error',
+//                title: 'Oops...',
+//                text: 'Ocorreu um erro na requisição, tente novamente mais tarde)'
+//            })
+//        } 
+//    });
+//}
+//function Details(Id) {
+     
+//        $.ajax({
+//            url: 'details/'+Id,
+//            type: "GET", 
+//            success: function (data) {
+//                response($.map(data, function (item) {
+//                    return { label: item.Nome, value: item.Nome, id: item.Id };
+//                }));
+//            },
+//            select: function (event, ui) {
+//                $("input[type=hidden]").val(ui.item.id);
+//            }
+//        });
+ 
+//}
+
+function Details(Id) {
+    window.location.href = 'details/' + Id;
+}

@@ -26,7 +26,7 @@ namespace SiGNC.Application.Web.NET5.Controllers
         private readonly IStatusConformidadeService _statusConformidadeService;
         private readonly ITipoAcaoConformidadeService _tipoAcaoConformidadeService;
         private readonly IUsuarioConformidadeService _usuarioConformidadeService;
-        private readonly ICausaRaizConformidadeService _causaRaizConformidadeService;
+        private readonly ICausaRaizConformidadeService _causaRaizConformidadeService; 
         private readonly IConformidadeService _conformidadeService;
         private static Random random = new Random();
 
@@ -107,7 +107,7 @@ namespace SiGNC.Application.Web.NET5.Controllers
 
                     if (await _conformidadeService.GetNumConformidade(RandomStringValue) == false)
                     {
-                        result = await _conformidadeService.SalvarConformidade(new ConformidadeDto
+                        result = await _conformidadeService.SalvarConformidadeSync(new ConformidadeDto
                         {
 
                             OrigemConformidadeId = conformidade.OrigemConformidadeId,
@@ -175,7 +175,7 @@ namespace SiGNC.Application.Web.NET5.Controllers
         {
             try
             {
-                var conformidades = (from or in await _conformidadeService.GetConformidades()
+                var conformidades = (from or in await _conformidadeService.GetConformidadesSync()
                                      select new ConformidadeTableViewModel
                                      {
                                          Id = or.Id,
@@ -209,6 +209,20 @@ namespace SiGNC.Application.Web.NET5.Controllers
         {
             var origens = (from or in await _origemService.GetOrigensConformidadeSync()
                            select new OrigemConformidadeViewModel
+                           {
+                               Id = or.Id,
+                               Nome = or.Nome
+                           }).ToList();
+            return Json(origens);
+        }
+
+
+        [HttpGet("status/list")]
+        [Route("status/list")]
+        public async Task<JsonResult> GetStatus()
+        {
+            var origens = (from or in await _statusConformidadeService.GetStatusConformidadeSync()
+                           select new StatusConformidadeViewModel
                            {
                                Id = or.Id,
                                Nome = or.Nome
@@ -299,12 +313,38 @@ namespace SiGNC.Application.Web.NET5.Controllers
 
         #endregion
 
-        [HttpGet]
-        public IActionResult DetalhaConformidade(int id)
+
+        //[HttpPost, Route("details")]
+        //public IActionResult DetalhaConformidade(string id)
+        //{
+        //    ViewBag.ConformidadeHiddenId = id;
+        //    return View();
+        //}
+
+
+
+        [HttpGet, Route("details/{id}")]
+        public IActionResult DetalhaConformidade(int Id)
         {
+            ViewBag.ConformidadeHiddenId = Id;
             return View();
         }
 
+
+        [HttpPost("detalhe")]
+        [Route("detalhe")]
+        public async Task<IActionResult> DetalhaConformidade(string requestId)
+        {
+            try
+            {
+                var conformidades = await _conformidadeService.GetConformidadeSync(int.Parse(requestId));
+                return Json(conformidades); 
+            }
+            catch (Exception ex)
+            { 
+                throw ex;
+            }
+        }
 
 
         //// GET: RelatorioController/Edit/5
