@@ -7,5 +7,7 @@ namespace SiGNC.Application.Web.NET5.Models.Conformidade
 {
     public class StatusConformidadeViewModel
     {
+        public int Id { get; set; }
+        public string Descricao { get; set; }
     }
 }

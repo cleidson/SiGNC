@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiGNC.Infra.Data.Context;
 
 namespace SiGNC.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210130222100_atualiza_conformidade_status_implanta")]
+    partial class atualiza_conformidade_status_implanta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -504,15 +506,15 @@ namespace SiGNC.Infra.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Reincidente")
-                        .HasMaxLength(255)
+                        .HasMaxLength(1)
                         .IsUnicode(false)
-                        .HasColumnType("char(255)")
+                        .HasColumnType("char(1)")
                         .IsFixedLength(true);
 
                     b.Property<string>("Requisito")
-                        .HasMaxLength(255)
+                        .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<int>("StatusConformidadeId")
                         .HasColumnType("int");

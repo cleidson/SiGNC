@@ -16,7 +16,7 @@ namespace SiGNC.Infra.Data.Models
         public DateTime? DataLimite { get; set; }
 
         public virtual Conformidade Conformidade { get; set; }
-        public virtual AspNetUser Responsavel { get; set; }
+        public virtual ApplicationUser Responsavel { get; set; }
         public virtual TipoAcao TipoAcao { get; set; }
     }
 }

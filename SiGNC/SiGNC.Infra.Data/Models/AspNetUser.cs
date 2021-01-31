@@ -35,6 +35,9 @@ namespace SiGNC.Infra.Data.Models
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
 
+        public string Nome { get; set; }
+        public string Sobrenome { get; set; }
+
         public virtual ICollection<AcaoCorretivaConformidade> AcaoCorretivaConformidades { get; set; }
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }

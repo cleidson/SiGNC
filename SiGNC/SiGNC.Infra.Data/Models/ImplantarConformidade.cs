@@ -14,7 +14,7 @@ namespace SiGNC.Infra.Data.Models
         public string ResponsavelId { get; set; }
 
         public virtual Conformidade Conformidade { get; set; }
-        public virtual AspNetUser Responsavel { get; set; }
-        public virtual StatusConformidade StatusConformidade { get; set; }
+        public virtual ApplicationUser Responsavel { get; set; }
+        //public virtual StatusConformidade StatusConformidade { get; set; }
     }
 }

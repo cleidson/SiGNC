@@ -38,6 +38,7 @@ namespace SiGNC.Application.Web.NET5
 #if DEBUG       
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 #endif
+
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>() .AddEntityFrameworkStores<ApplicationDbContext>() .AddDefaultTokenProviders(); 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));

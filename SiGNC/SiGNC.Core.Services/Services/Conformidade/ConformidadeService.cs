@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SiGNC.Core.Services.DTOs.Conformidade;
 using SiGNC.Core.Services.Interfaces.Conformidade;
@@ -30,15 +31,108 @@ namespace SiGNC.Core.Services.Services.Conformidade
         {
             throw new NotImplementedException();
         }
-
-        public Task<List<ConformidadeDto>> ListarConformidades()
+         
+        public Task<List<ConformidadeDto>> GetConformidades()
         {
-            throw new NotImplementedException();
+            try
+            {
+                 
+
+                var conformidades = (from or in _db.Conformidades 
+                                     where or.StatusConformidadeId == 1
+                               select new ConformidadeDto
+                               {
+                                   Id = or.Id,
+                                   UsuarioSolicitante = new UsuarioDto
+                                   {
+                                       Id = or.UsuarioSolicitanteId,
+                                     Nome = or.UsuarioSolicitante.Nome
+                                   },
+                                   NumeroConformidade = or.NumeroConformidade,
+                                   StatusConformidade = new StatusConformidadeDto
+                                   {
+                                    Id = or.StatusConformidade.Id,
+                                    Nome = or.StatusConformidade.Nome
+                                   
+                                   },
+                                   DataEmissao = or.DataCadastro.Value.ToString("dd/MM/yyyy")
+                               }) .AsQueryable();
+
+                return conformidades.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public bool SalvarConformidade(ConformidadeDto conformidade)
+        public async  Task<bool> GetNumConformidade(string numConformidade)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _db.Conformidades.Where(t => t.NumeroConformidade.Equals(numConformidade)).AnyAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<bool> SalvarConformidade(ConformidadeDto conformidade)
+        {
+            try
+            {
+                using (_db)
+                {
+                    var data = new Infra.Data.Models.Conformidade
+                    {
+                        OrigemConformidadeId = int.Parse(conformidade.OrigemConformidadeId),
+                        StatusConformidadeId = int.Parse(conformidade.StatusConformidadeId),
+                        UsuarioSolicitanteId = conformidade.UsuarioSolicitanteId,
+                        UsuarioGestorId = "107fa1ac-6191-4541-8096-e08d5bcc7690", //Usuário logado
+                        TipoConformidadeId = 3,
+                        Reincidente = conformidade.Reincidente,
+                        Requisito = conformidade.Requisito,
+                        NumeroConformidade = conformidade.NumeroConformidade,
+                        DataCadastro = DateTime.Parse(conformidade.DataEmissao),
+                        AcaoCorretivaConformidades = new List<AcaoCorretivaConformidade>{
+                            new AcaoCorretivaConformidade
+                            { 
+                                 ResponsavelId = conformidade.AcaoCorretiva.Responsavel.Id,
+                                 DataLimite = DateTime.Parse(conformidade.AcaoCorretiva.DataImplantacao), 
+                                 Descricao = conformidade.AcaoCorretiva.Descricao,
+                                 RiscoOportunidade = conformidade.AcaoCorretiva.RiscoOportunidade,
+                                 TipoAcaoId  = conformidade.AcaoCorretiva.Id
+                            }
+                        },
+                        DetalhaConformidades =  (from dt in conformidade.Detalhamentos
+                                         select new DetalhaConformidade
+                                         {
+                                             Descricao = dt.Descricao,
+                                             Abrangencia = dt.Detalhamento
+                                         }).ToList(),
+                        ConformidadeHasCausaRaizs = (from cr in conformidade.CausaRaizes
+                                       select new ConformidadeHasCausaRaiz
+                                       {
+                                           CausaRaizConformidadeId = cr.CausaRaizConformidadeId,
+                                           Ocorreu = cr.Ocorreu,
+                                           Quais = cr.Quais
+                                       }).ToList()
+                    };
+
+                    _db.Conformidades.Add(data);
+                    var result =  _db.SaveChanges() > 0;
+                    await _db.DisposeAsync();
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
     }
 }

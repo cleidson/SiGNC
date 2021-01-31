@@ -19,13 +19,14 @@ namespace SiGNC.Core.Services.DTOs.Conformidade
         public string DataEmissao { get; set; }
         public string StatusConformidadeId { get; set; }
         public string OrigemConformidadeId { get; set; }
+      
         public ConformidadeDto ReincidenciaConformidadePai { get; set; }
         public UsuarioDto UsuarioSolicitante { get; set; }
         public UsuarioDto UsuarioGestor { get; set; }
         public StatusConformidadeDto StatusConformidade { get; set; }
-        public OrigemDto OrigemConformidade { get; set; } 
-        public List<DetalhaConformidadeDto> Detalhamentos { get; set; }
+        public OrigemDto OrigemConformidade { get; set; }
+        public List<DetalhaConformidadeDto> Detalhamentos { get; set; } = new List<DetalhaConformidadeDto>();
         public AcaoCorretivaConformidadeDto AcaoCorretiva { get; set; }
-        public  List<CausaRaizConformidadeDto> CausaRaizes { get; set; }
+        public  List<ConformidadeHasCausaRaizDto> CausaRaizes { get; set; } = new List<ConformidadeHasCausaRaizDto>();
     }
 }

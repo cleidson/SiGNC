@@ -22,7 +22,8 @@ namespace SiGNC.Infra.Data.Context
 
 
         public virtual DbSet<AcaoCorretivaConformidade> AcaoCorretivaConformidades { get; set; }
-         
+        public virtual DbSet<ApplicationUser> AspNetUsers { get; set; }
+
         public virtual DbSet<CausaRaizConformidade> CausaRaizConformidades { get; set; }
         public virtual DbSet<Conformidade> Conformidades { get; set; }
         public virtual DbSet<ConformidadeHasCausaRaiz> ConformidadeHasCausaRaizs { get; set; }
@@ -50,7 +51,7 @@ namespace SiGNC.Infra.Data.Context
 
 
             modelBuilder.Entity<AcaoCorretivaConformidade>(entity =>
-            {
+            { 
                 entity.ToTable("AcaoCorretivaConformidade");
 
                 entity.Property(e => e.DataLimite).HasColumnType("datetime");
@@ -107,6 +108,8 @@ namespace SiGNC.Infra.Data.Context
 
             modelBuilder.Entity<AspNetUser>(entity =>
             {
+                 
+
                 entity.HasIndex(e => e.NormalizedEmail, "EmailIndex");
 
                 entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
@@ -191,17 +194,18 @@ namespace SiGNC.Infra.Data.Context
                 entity.Property(e => e.DataCadastro).HasColumnType("datetime");
 
                 entity.Property(e => e.Reincidente)
-                    .HasMaxLength(1)
+                     .HasMaxLength(255)
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
                 entity.Property(e => e.Requisito)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.UsuarioGestorId).HasMaxLength(450);
 
                 entity.Property(e => e.UsuarioSolicitanteId).HasMaxLength(450);
+                entity.Property(e => e.NumeroConformidade).HasMaxLength(255);
 
                 entity.HasOne(d => d.OrigemConformidade)
                     .WithMany(p => p.Conformidades)
@@ -229,6 +233,12 @@ namespace SiGNC.Infra.Data.Context
                     .WithMany(p => p.ConformidadeUsuarioSolicitantes)
                     .HasForeignKey(d => d.UsuarioSolicitanteId)
                     .HasConstraintName("FK_Conformidade_AspNetUsers");
+
+                    entity.HasOne(d => d.StatusConformidade)
+                    .WithMany(p => p.Conformidades)
+                    .HasForeignKey(d => d.StatusConformidadeId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Conformidade_StatusConformidade");
             });
 
             modelBuilder.Entity<ConformidadeHasCausaRaiz>(entity =>
@@ -309,11 +319,11 @@ namespace SiGNC.Infra.Data.Context
                     .HasForeignKey(d => d.ResponsavelId)
                     .HasConstraintName("FK_ImplantarConformidade_AspNetUsers");
 
-                entity.HasOne(d => d.StatusConformidade)
-                    .WithMany(p => p.ImplantarConformidades)
-                    .HasForeignKey(d => d.StatusConformidadeId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_ImplantacaoConformidade_StatusConformidade");
+                //entity.HasOne(d => d.StatusConformidade)
+                //    .WithMany(p => p.ImplantarConformidades)
+                //    .HasForeignKey(d => d.StatusConformidadeId)
+                //    .OnDelete(DeleteBehavior.Cascade)
+                //    .HasConstraintName("FK_ImplantacaoConformidade_StatusConformidade");
             });
 
             modelBuilder.Entity<OrigemConformidade>(entity =>
@@ -355,6 +365,27 @@ namespace SiGNC.Infra.Data.Context
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<AspNetUser>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedEmail)
+                    .HasName("EmailIndex");
+
+                entity.HasIndex(e => e.NormalizedUserName)
+                    .HasName("UserNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+                entity.Property(e => e.Email).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
+
+                entity.Property(e => e.UserName).HasMaxLength(256);
+            });
+
+
+
             modelBuilder.Entity<TipoConformidade>(entity =>
             {
                 entity.ToTable("TipoConformidade");
@@ -367,6 +398,7 @@ namespace SiGNC.Infra.Data.Context
                     .HasMaxLength(255)
                     .IsUnicode(false);
             });
+
 
 
             base.OnModelCreating(modelBuilder);

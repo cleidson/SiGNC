@@ -9,8 +9,10 @@ namespace SiGNC.Core.Services.Interfaces.Conformidade
 { 
     public interface IConformidadeService
     {
-        bool SalvarConformidade(ConformidadeDto conformidade);
+        Task<bool> SalvarConformidade(ConformidadeDto conformidade);
         bool EditarConformidade(ConformidadeDto conformidade);
-        Task<List<ConformidadeDto>> ListarConformidades(); 
+        Task<List<ConformidadeDto>> GetConformidades();
+
+        Task<bool> GetNumConformidade(string numConformidade);
     }
 }
