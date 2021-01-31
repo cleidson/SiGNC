@@ -10,8 +10,8 @@ using SiGNC.Infra.Data.Context;
 namespace SiGNC.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210128181032_Initial")]
-    partial class Initial
+    [Migration("20210131042821_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -160,6 +160,9 @@ namespace SiGNC.Infra.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("AspNetUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("ConformidadeId")
                         .HasColumnType("int");
 
@@ -184,6 +187,8 @@ namespace SiGNC.Infra.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AspNetUserId");
 
                     b.HasIndex("ConformidadeId");
 
@@ -219,6 +224,9 @@ namespace SiGNC.Infra.Data.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("Nome")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -237,6 +245,9 @@ namespace SiGNC.Infra.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sobrenome")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -334,6 +345,9 @@ namespace SiGNC.Infra.Data.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("Nome")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -354,6 +368,9 @@ namespace SiGNC.Infra.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Sobrenome")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -362,6 +379,14 @@ namespace SiGNC.Infra.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("([NormalizedUserName] IS NOT NULL)");
 
                     b.HasIndex(new[] { "NormalizedEmail" }, "EmailIndex")
                         .HasDatabaseName("EmailIndex1");
@@ -464,18 +489,15 @@ namespace SiGNC.Infra.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("ConformidadeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Descricao")
-                        .HasMaxLength(10)
-                        .HasColumnType("nchar(10)")
-                        .IsFixedLength(true);
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Nome")
-                        .HasMaxLength(10)
-                        .HasColumnType("nchar(10)")
-                        .IsFixedLength(true);
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
@@ -489,8 +511,18 @@ namespace SiGNC.Infra.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("AspNetUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AspNetUserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime?>("DataCadastro")
                         .HasColumnType("datetime");
+
+                    b.Property<string>("NumeroConformidade")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("OrigemConformidadeId")
                         .HasColumnType("int");
@@ -499,15 +531,18 @@ namespace SiGNC.Infra.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Reincidente")
-                        .HasMaxLength(1)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("char(1)")
+                        .HasColumnType("char(255)")
                         .IsFixedLength(true);
 
                     b.Property<string>("Requisito")
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("StatusConformidadeId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("TipoConformidadeId")
                         .HasColumnType("int");
@@ -522,9 +557,15 @@ namespace SiGNC.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AspNetUserId");
+
+                    b.HasIndex("AspNetUserId1");
+
                     b.HasIndex("OrigemConformidadeId");
 
                     b.HasIndex("ReincidenciaConformidadePaiId");
+
+                    b.HasIndex("StatusConformidadeId");
 
                     b.HasIndex("TipoConformidadeId");
 
@@ -548,7 +589,10 @@ namespace SiGNC.Infra.Data.Migrations
                     b.Property<int?>("ConformidadeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Descricao")
+                    b.Property<bool>("Ocorreu")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Quais")
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)");
@@ -626,6 +670,9 @@ namespace SiGNC.Infra.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("AspNetUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("ConformidadeId")
                         .HasColumnType("int");
 
@@ -643,11 +690,11 @@ namespace SiGNC.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AspNetUserId");
+
                     b.HasIndex("ConformidadeId");
 
                     b.HasIndex("ResponsavelId");
-
-                    b.HasIndex("StatusConformidadeId");
 
                     b.ToTable("ImplantarConformidade");
                 });
@@ -680,6 +727,9 @@ namespace SiGNC.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
                         .HasMaxLength(100)
@@ -788,13 +838,17 @@ namespace SiGNC.Infra.Data.Migrations
 
             modelBuilder.Entity("SiGNC.Infra.Data.Models.AcaoCorretivaConformidade", b =>
                 {
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", null)
+                        .WithMany("AcaoCorretivaConformidades")
+                        .HasForeignKey("AspNetUserId");
+
                     b.HasOne("SiGNC.Infra.Data.Models.Conformidade", "Conformidade")
                         .WithMany("AcaoCorretivaConformidades")
                         .HasForeignKey("ConformidadeId")
                         .HasConstraintName("FK_AcaoCorretivaConformidade_Conformidade")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", "Responsavel")
+                    b.HasOne("SiGNC.Infra.Data.Models.ApplicationUser", "Responsavel")
                         .WithMany("AcaoCorretivaConformidades")
                         .HasForeignKey("ResponsavelId")
                         .HasConstraintName("FK_AcaoCorretivaConformidade_AspNetUsers");
@@ -877,6 +931,14 @@ namespace SiGNC.Infra.Data.Migrations
 
             modelBuilder.Entity("SiGNC.Infra.Data.Models.Conformidade", b =>
                 {
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", null)
+                        .WithMany("ConformidadeUsuarioGestors")
+                        .HasForeignKey("AspNetUserId");
+
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", null)
+                        .WithMany("ConformidadeUsuarioSolicitantes")
+                        .HasForeignKey("AspNetUserId1");
+
                     b.HasOne("SiGNC.Infra.Data.Models.OrigemConformidade", "OrigemConformidade")
                         .WithMany("Conformidades")
                         .HasForeignKey("OrigemConformidadeId")
@@ -888,18 +950,25 @@ namespace SiGNC.Infra.Data.Migrations
                         .HasForeignKey("ReincidenciaConformidadePaiId")
                         .HasConstraintName("FK_Conformidade_Conformidade");
 
+                    b.HasOne("SiGNC.Infra.Data.Models.StatusConformidade", "StatusConformidade")
+                        .WithMany("Conformidades")
+                        .HasForeignKey("StatusConformidadeId")
+                        .HasConstraintName("FK_Conformidade_StatusConformidade")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SiGNC.Infra.Data.Models.TipoConformidade", "TipoConformidade")
                         .WithMany("Conformidades")
                         .HasForeignKey("TipoConformidadeId")
                         .HasConstraintName("FK_Conformidade_TipoConformidade")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", "UsuarioGestor")
+                    b.HasOne("SiGNC.Infra.Data.Models.ApplicationUser", "UsuarioGestor")
                         .WithMany("ConformidadeUsuarioGestors")
                         .HasForeignKey("UsuarioGestorId")
                         .HasConstraintName("FK_Conformidade_AspNetUsers1");
 
-                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", "UsuarioSolicitante")
+                    b.HasOne("SiGNC.Infra.Data.Models.ApplicationUser", "UsuarioSolicitante")
                         .WithMany("ConformidadeUsuarioSolicitantes")
                         .HasForeignKey("UsuarioSolicitanteId")
                         .HasConstraintName("FK_Conformidade_AspNetUsers");
@@ -907,6 +976,8 @@ namespace SiGNC.Infra.Data.Migrations
                     b.Navigation("OrigemConformidade");
 
                     b.Navigation("ReincidenciaConformidadePai");
+
+                    b.Navigation("StatusConformidade");
 
                     b.Navigation("TipoConformidade");
 
@@ -956,28 +1027,35 @@ namespace SiGNC.Infra.Data.Migrations
 
             modelBuilder.Entity("SiGNC.Infra.Data.Models.ImplantarConformidade", b =>
                 {
+                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", null)
+                        .WithMany("ImplantarConformidades")
+                        .HasForeignKey("AspNetUserId");
+
                     b.HasOne("SiGNC.Infra.Data.Models.Conformidade", "Conformidade")
                         .WithMany("ImplantarConformidades")
                         .HasForeignKey("ConformidadeId")
                         .HasConstraintName("FK_ImplantacaoConformidade_Conformidade")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SiGNC.Infra.Data.Models.AspNetUser", "Responsavel")
+                    b.HasOne("SiGNC.Infra.Data.Models.ApplicationUser", "Responsavel")
                         .WithMany("ImplantarConformidades")
                         .HasForeignKey("ResponsavelId")
                         .HasConstraintName("FK_ImplantarConformidade_AspNetUsers");
 
-                    b.HasOne("SiGNC.Infra.Data.Models.StatusConformidade", "StatusConformidade")
-                        .WithMany("ImplantarConformidades")
-                        .HasForeignKey("StatusConformidadeId")
-                        .HasConstraintName("FK_ImplantacaoConformidade_StatusConformidade")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.Navigation("Conformidade");
 
                     b.Navigation("Responsavel");
+                });
 
-                    b.Navigation("StatusConformidade");
+            modelBuilder.Entity("SiGNC.Infra.Data.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("AcaoCorretivaConformidades");
+
+                    b.Navigation("ConformidadeUsuarioGestors");
+
+                    b.Navigation("ConformidadeUsuarioSolicitantes");
+
+                    b.Navigation("ImplantarConformidades");
                 });
 
             modelBuilder.Entity("SiGNC.Infra.Data.Models.AspNetRole", b =>
@@ -1033,7 +1111,7 @@ namespace SiGNC.Infra.Data.Migrations
 
             modelBuilder.Entity("SiGNC.Infra.Data.Models.StatusConformidade", b =>
                 {
-                    b.Navigation("ImplantarConformidades");
+                    b.Navigation("Conformidades");
                 });
 
             modelBuilder.Entity("SiGNC.Infra.Data.Models.TipoAcao", b =>

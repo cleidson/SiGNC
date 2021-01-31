@@ -1,27 +1,30 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System;
 using Microsoft.EntityFrameworkCore;
-using SiGNC.Infra.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace SiGNC.Infra.Data.Context
-{ 
+#nullable disable
 
-    public partial class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+namespace ClassLibrary1.Models
 {
-        public ApplicationDbContext()
+    public partial class SiGNCContext : DbContext
+    {
+        public SiGNCContext()
         {
         }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public SiGNCContext(DbContextOptions<SiGNCContext> options)
+            : base(options)
         {
         }
 
-
-        public virtual DbSet<AcaoCorretivaConformidade> AcaoCorretivaConformidades { get; set; } 
+        public virtual DbSet<AcaoCorretivaConformidade> AcaoCorretivaConformidades { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUserRole> AspNetUserRoles { get; set; }
+        public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
         public virtual DbSet<CausaRaizConformidade> CausaRaizConformidades { get; set; }
         public virtual DbSet<Conformidade> Conformidades { get; set; }
         public virtual DbSet<ConformidadeHasCausaRaiz> ConformidadeHasCausaRaizs { get; set; }
@@ -32,7 +35,7 @@ namespace SiGNC.Infra.Data.Context
         public virtual DbSet<StatusConformidade> StatusConformidades { get; set; }
         public virtual DbSet<TipoAcao> TipoAcaos { get; set; }
         public virtual DbSet<TipoConformidade> TipoConformidades { get; set; }
-      
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -45,11 +48,9 @@ namespace SiGNC.Infra.Data.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Latin1_General_CI_AS");
- 
-
 
             modelBuilder.Entity<AcaoCorretivaConformidade>(entity =>
-            { 
+            {
                 entity.ToTable("AcaoCorretivaConformidade");
 
                 entity.Property(e => e.DataLimite).HasColumnType("datetime");
@@ -82,16 +83,102 @@ namespace SiGNC.Infra.Data.Context
                     .HasConstraintName("FK_AcaoCorretivaConformidade_TipoAcao");
             });
 
-           
+            modelBuilder.Entity<AspNetRole>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedName] IS NOT NULL)");
+
+                entity.Property(e => e.Name).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedName).HasMaxLength(256);
+            });
+
+            modelBuilder.Entity<AspNetRoleClaim>(entity =>
+            {
+                entity.HasIndex(e => e.RoleId, "IX_AspNetRoleClaims_RoleId");
+
+                entity.Property(e => e.RoleId).IsRequired();
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetRoleClaims)
+                    .HasForeignKey(d => d.RoleId);
+            });
+
+            modelBuilder.Entity<AspNetUser>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedEmail, "EmailIndex");
+
+                entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+                entity.Property(e => e.Email).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
+
+                entity.Property(e => e.UserName).HasMaxLength(256);
+            });
+
+            modelBuilder.Entity<AspNetUserClaim>(entity =>
+            {
+                entity.HasIndex(e => e.UserId, "IX_AspNetUserClaims_UserId");
+
+                entity.Property(e => e.UserId).IsRequired();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserClaims)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserLogin>(entity =>
+            {
+                entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
+
+                entity.HasIndex(e => e.UserId, "IX_AspNetUserLogins_UserId");
+
+                entity.Property(e => e.UserId).IsRequired();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserLogins)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserRole>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId });
+
+                entity.HasIndex(e => e.RoleId, "IX_AspNetUserRoles_RoleId");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.RoleId);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserToken>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserTokens)
+                    .HasForeignKey(d => d.UserId);
+            });
+
             modelBuilder.Entity<CausaRaizConformidade>(entity =>
             {
                 entity.ToTable("CausaRaizConformidade");
 
-                entity.Property(e => e.Descricao) 
+                entity.Property(e => e.Descricao)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Nome) 
+                entity.Property(e => e.Nome)
                     .HasMaxLength(255)
                     .IsUnicode(false);
             });
@@ -100,10 +187,14 @@ namespace SiGNC.Infra.Data.Context
             {
                 entity.ToTable("Conformidade");
 
+                entity.HasIndex(e => e.StatusConformidadeId, "IX_Conformidade_StatusConformidadeId");
+
                 entity.Property(e => e.DataCadastro).HasColumnType("datetime");
 
+                entity.Property(e => e.NumeroConformidade).HasMaxLength(255);
+
                 entity.Property(e => e.Reincidente)
-                     .HasMaxLength(255)
+                    .HasMaxLength(255)
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
@@ -114,7 +205,6 @@ namespace SiGNC.Infra.Data.Context
                 entity.Property(e => e.UsuarioGestorId).HasMaxLength(450);
 
                 entity.Property(e => e.UsuarioSolicitanteId).HasMaxLength(450);
-                entity.Property(e => e.NumeroConformidade).HasMaxLength(255);
 
                 entity.HasOne(d => d.OrigemConformidade)
                     .WithMany(p => p.Conformidades)
@@ -126,6 +216,11 @@ namespace SiGNC.Infra.Data.Context
                     .WithMany(p => p.InverseReincidenciaConformidadePai)
                     .HasForeignKey(d => d.ReincidenciaConformidadePaiId)
                     .HasConstraintName("FK_Conformidade_Conformidade");
+
+                entity.HasOne(d => d.StatusConformidade)
+                    .WithMany(p => p.Conformidades)
+                    .HasForeignKey(d => d.StatusConformidadeId)
+                    .HasConstraintName("FK_Conformidade_StatusConformidade");
 
                 entity.HasOne(d => d.TipoConformidade)
                     .WithMany(p => p.Conformidades)
@@ -142,17 +237,15 @@ namespace SiGNC.Infra.Data.Context
                     .WithMany(p => p.ConformidadeUsuarioSolicitantes)
                     .HasForeignKey(d => d.UsuarioSolicitanteId)
                     .HasConstraintName("FK_Conformidade_AspNetUsers");
-
-                    entity.HasOne(d => d.StatusConformidade)
-                    .WithMany(p => p.Conformidades)
-                    .HasForeignKey(d => d.StatusConformidadeId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_Conformidade_StatusConformidade");
             });
 
             modelBuilder.Entity<ConformidadeHasCausaRaiz>(entity =>
             {
                 entity.ToTable("ConformidadeHasCausaRaiz");
+
+                entity.Property(e => e.Ocorreu)
+                    .IsRequired()
+                    .HasDefaultValueSql("(CONVERT([bit],(0)))");
 
                 entity.Property(e => e.Quais)
                     .HasMaxLength(255)
@@ -227,12 +320,6 @@ namespace SiGNC.Infra.Data.Context
                     .WithMany(p => p.ImplantarConformidades)
                     .HasForeignKey(d => d.ResponsavelId)
                     .HasConstraintName("FK_ImplantarConformidade_AspNetUsers");
-
-                //entity.HasOne(d => d.StatusConformidade)
-                //    .WithMany(p => p.ImplantarConformidades)
-                //    .HasForeignKey(d => d.StatusConformidadeId)
-                //    .OnDelete(DeleteBehavior.Cascade)
-                //    .HasConstraintName("FK_ImplantacaoConformidade_StatusConformidade");
             });
 
             modelBuilder.Entity<OrigemConformidade>(entity =>
@@ -255,10 +342,6 @@ namespace SiGNC.Infra.Data.Context
                 entity.Property(e => e.Nome)
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.Property(e => e.Nome)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<TipoAcao>(entity =>
@@ -274,10 +357,6 @@ namespace SiGNC.Infra.Data.Context
                     .IsUnicode(false);
             });
 
-           
-
-
-
             modelBuilder.Entity<TipoConformidade>(entity =>
             {
                 entity.ToTable("TipoConformidade");
@@ -291,11 +370,9 @@ namespace SiGNC.Infra.Data.Context
                     .IsUnicode(false);
             });
 
+            OnModelCreatingPartial(modelBuilder);
+        }
 
-
-            base.OnModelCreating(modelBuilder);
-        } 
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
-
-     
 }

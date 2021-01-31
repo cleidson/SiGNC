@@ -35,9 +35,7 @@ namespace SiGNC.Core.Services.Services.Conformidade
         public Task<List<ConformidadeDto>> GetConformidades()
         {
             try
-            {
-                 
-
+            { 
                 var conformidades = (from or in _db.Conformidades 
                                      where or.StatusConformidadeId == 1
                                select new ConformidadeDto
@@ -46,7 +44,7 @@ namespace SiGNC.Core.Services.Services.Conformidade
                                    UsuarioSolicitante = new UsuarioDto
                                    {
                                        Id = or.UsuarioSolicitanteId,
-                                     Nome = or.UsuarioSolicitante.Nome
+                                       Nome = or.UsuarioSolicitante.Nome
                                    },
                                    NumeroConformidade = or.NumeroConformidade,
                                    StatusConformidade = new StatusConformidadeDto
@@ -90,7 +88,7 @@ namespace SiGNC.Core.Services.Services.Conformidade
                         OrigemConformidadeId = int.Parse(conformidade.OrigemConformidadeId),
                         StatusConformidadeId = int.Parse(conformidade.StatusConformidadeId),
                         UsuarioSolicitanteId = conformidade.UsuarioSolicitanteId,
-                        UsuarioGestorId = "107fa1ac-6191-4541-8096-e08d5bcc7690", //Usuário logado
+                        UsuarioGestorId = "0a1ff47b-0cc3-43f8-8687-3d1c11bb00bf", //Usuário logado
                         TipoConformidadeId = 3,
                         Reincidente = conformidade.Reincidente,
                         Requisito = conformidade.Requisito,

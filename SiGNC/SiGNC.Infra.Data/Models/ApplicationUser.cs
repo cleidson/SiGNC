@@ -11,9 +11,7 @@ using System.Threading.Tasks;
 namespace SiGNC.Infra.Data.Models
 { 
     public class ApplicationUser : IdentityUser
-    { 
-        public string Nome { get; set; }
-        public string Sobrenome { get; set; }
+    {
         public ApplicationUser()
         {
             AcaoCorretivaConformidades = new HashSet<AcaoCorretivaConformidade>(); 
@@ -21,7 +19,9 @@ namespace SiGNC.Infra.Data.Models
             ConformidadeUsuarioSolicitantes = new HashSet<Conformidade>();
             ImplantarConformidades = new HashSet<ImplantarConformidade>();
         }
-
+        public string Nome { get; set; }
+        public string Sobrenome { get; set; }
+  
         public virtual ICollection<Conformidade> ConformidadeUsuarioGestors { get; set; }
         public virtual ICollection<Conformidade> ConformidadeUsuarioSolicitantes { get; set; } 
         public virtual ICollection<AcaoCorretivaConformidade> AcaoCorretivaConformidades { get; set; }
