@@ -2,14 +2,13 @@
     let user = {
         Email: "",
         Senha: ""
-    };
-
-    $("#ErroLogin").hide();
+    }; 
     $("#btn-login-entrar").click(function (event) {
-        if (validaCampos() == false)
+        if (ValidaCampos() == false)
             return;
-         
-        user.Email = $("#inputEmail").val();
+
+
+        user.Email = $("#inputEmail").val() == "";
         user.Senha = $("#inputPassword").val()
 
         $.ajax({
@@ -19,50 +18,38 @@
             data: user,
             success: (data) => {
                 if (data != null) {
-                    window.location.href = 'Home';
-                } else {  
-                    $("#ErroLogin").show();
-                    $("#inputEmail").removeClass('is-valid');
-                    $("#inputPassword").removeClass('is-valid'); 
+                    window.location.href = 'conformidade/index';
+                } else {
+                    $("#ErroLogin").addClass("is-invalid");
                 }
             },
-            error: (data) => { 
-                console.table(data);
-                $("#ErroLogin").show();
-                $("#inputEmail").removeClass('is-valid');
-                $("#inputPassword").removeClass('is-valid'); 
+            error: (data) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocorreu um erro na requisição, tente novamente mais tarde)'
+                })
+                console.table(data)
             }
         });
 
         event.preventDefault();
     });
     function validaCampos() {
-        var resultEmail = true;
-        var resultSenha = true;
-        
         if ($("#inputEmail").val() == "") {
             $("#inputEmail").addClass('is-invalid');
-            resultEmail = false;
         } else {
             $("#inputEmail").removeClass('is-invalid');
             $("#inputEmail").addClass('is-valid');
-            resultEmail = true;
         }
 
 
         if ($("#inputPassword").val() == "") {
             $("#inputPassword").addClass('is-invalid');
-            resultSenha = false;
+            validaEminente = false;
         } else {
             $("#inputPassword").removeClass('is-invalid');
             $("#inputPassword").addClass('is-valid');
-            resultSenha = true;
-        }
-
-        if (resultEmail && resultSenha) {
-            return true
-        } else {
-            return false;
         }
     }
 })(jQuery)

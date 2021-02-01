@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SiGNC.Application.Web.NET5.Models;
+using SiGNC.Core.Services.Interfaces.Conformidade;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,11 +13,33 @@ namespace SiGNC.Application.Web.NET5.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IConformidadeService _conformidadeService;
+        
+        public HomeController(ILogger<HomeController> logger, IConformidadeService conformidadeService)
         {
-            _logger = logger;
+            _conformidadeService = conformidadeService;
+               _logger = logger;
         }
+
+
+
+
+        [HttpGet("chart/count")]
+        [Route("chart/count")]
+        public async Task<IActionResult> ChartConformidade()
+        {
+            try
+            { 
+                return Ok(await Task.Run(() => _conformidadeService.TotalPorSemanaSync().Where(t=>t.Total>0)));
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+
 
         public IActionResult Index()
         {

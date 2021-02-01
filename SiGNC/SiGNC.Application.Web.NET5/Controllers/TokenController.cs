@@ -22,7 +22,7 @@ namespace SiGNC.Application.Web.NET5.Controllers
         private readonly IConfiguration _configuration;
         protected readonly IAuthorizationSiGncService _autorization;
         private readonly ILogger<HomeController> _logger;
-
+        string resul = string.Empty;
 
         //Construtor
         public TokenController(ILogger<HomeController> logger, IConfiguration configuration, IAuthorizationSiGncService autorization)
@@ -62,6 +62,39 @@ namespace SiGNC.Application.Web.NET5.Controllers
             };
            
         }
+
+
+
+        [Route("page/login")]
+        [HttpPost("page/login")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> LoginPage([FromForm] UsuarioViewModel user)
+        {
+            
+            if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Senha))
+            { 
+                resul = "Email e Senha inválidos";
+                return Ok(resul);
+            }
+            else
+            {
+                var Token = await _autorization.AuthenticateSync(new AuthenticateRequestDto
+                {
+                    Email = user.Email,
+                    Senha = user.Senha,
+
+                });
+
+                if (Token == null)
+                    resul = "Email e Senha inválidos";
+
+                if (Token != null)
+                    return Ok(Token);
+                else
+                    return Ok(resul);
+            };  
+        }
+
 
         [AllowAnonymous]
         [HttpPost]

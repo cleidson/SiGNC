@@ -40,19 +40,12 @@ namespace SiGNC.Application.Web.NET5.Controllers
         public ActionResult<string> Get()
         {
             return " << Controlador UsuariosController :: WebApiUsuarios >> ";
-        }
-
-
-
-
-
-
-
+        } 
         [HttpPost("Criar")]
         [Route("Criar")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
         {
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Nome = model.Name };
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Nome = model.Name};
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)

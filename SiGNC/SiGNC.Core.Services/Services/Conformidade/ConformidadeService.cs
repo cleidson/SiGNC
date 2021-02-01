@@ -249,6 +249,28 @@ namespace SiGNC.Core.Services.Services.Conformidade
             }
         }
 
-      
+        public  List<TotalConformidadeWeekDto> TotalPorSemanaSync()
+        {
+            try
+            {
+                DateTime start = new DateTime(2021, 1, 1);
+                DateTime end = DateTime.Now;
+                var res = Enumerable
+                                   .Range(0, 1 + (end - start).Days)
+                                   .Select(x => start.AddDays(x))
+                                   .GroupJoin(_db.Conformidades,
+                                       dt => dt, o => o.DataCadastro,
+                                       (dt, orders) => new TotalConformidadeWeekDto { Dia = dt.ToString("dd/MM/yyyy"), Total = orders.Count() })
+                                   .ToList();
+
+                return res;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

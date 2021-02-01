@@ -56,15 +56,16 @@ namespace SiGNC.Core.Services.Services
 
             var usuario = _db.Users.FirstOrDefault(t => t.Email == request.Email);
 
+            IdentityRole role = new IdentityRole();
             var usuarioRule = _db.UserRoles.FirstOrDefault(t => t.UserId == usuario.Id);
-            
-            var rule = _db.Roles.FirstOrDefault(t => t.Id == usuarioRule.RoleId);
+            if(usuarioRule !=  null)
+                role = _db.Roles.FirstOrDefault(t => t.Id == usuarioRule.RoleId);
 
             var user = new Usuario()
             {
                 Id = usuario.Id, //Adiiconar
                 Email = request.Email,
-                Role = rule.Name 
+                Role = usuarioRule != null ? role.Name : "" 
             };
 
 

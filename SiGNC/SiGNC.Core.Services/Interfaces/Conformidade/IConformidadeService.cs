@@ -15,6 +15,7 @@ namespace SiGNC.Core.Services.Interfaces.Conformidade
         Task<List<ConformidadeDto>> GetConformidadesSync(int statusConformidadeId);
         Task<ConformidadeDto> GetConformidadeSync(int id); 
         Task<bool> EditarConformidadeSync(ConformidadeDto conformidade);
-        Task<bool> GetNumConformidade(string numConformidade);
+        Task<bool> GetNumConformidade(string numConformidade); 
+        List<TotalConformidadeWeekDto>  TotalPorSemanaSync();
     }
 }

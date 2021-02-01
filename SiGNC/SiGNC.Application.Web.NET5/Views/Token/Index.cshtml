@@ -18,25 +18,23 @@
 
 </head>
 <body class="text-center">
-    <form class="form-signin" asp-action="Login">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form class="form-signin">
         <div class="mb-4"><h1>SiGNC</h1></div>
-        @*<img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">*@
-    <h1 class="h3 mb-3 font-weight-normal">  <span class="fa fa-user-circle" style="font-size:80px"></span></h1>
-        <label for="inputEmail" class="sr-only">E-mail</label>
-        @*<input>*@
-        <input asp-for="Email" class="form-control"  type="email" id="inputEmail"   placeholder="Insira o e-mail" required="" autofocus=""/>
 
+        <h1 class="h3 mb-3 font-weight-normal">
+            <span class="fa fa-user-circle" style="font-size:80px"></span>
+
+        </h1>
+
+        <label for="inputEmail" class="sr-only">E-mail</label>
+        <input a class="form-control" type="email" id="inputEmail" placeholder="Insira o e-mail" required="" autofocus="" />
+        <div class="invalid-feedback"> Por favor, insira o E-mail.</div>
         <label for="inputPassword" class="sr-only">Password</label>
-        @*<input type="password" id="inputPassword" class="form-control" placeholder="Insira a senha" required="">*@
-        <input asp-for="Senha" class="form-control" type="password" id="inputPassword"   placeholder="Insira a senha" required="" />
-        <span asp-validation-for="Senha" class="text-danger"></span>
-        <div class="checkbox mb-3">
-            @*<label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>*@
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+        <input class="form-control" type="password" id="inputPassword" placeholder="Insira a senha" required="" />
+        <div class="invalid-feedback"> Por favor, insira a Senha.</div>
+
+        <div class="error-invalid-login " id="ErroLogin"> Email e Senha inválidos</div>
+        <button class="btn btn-lg btn-primary btn-block" id="btn-login-entrar" type="button">Entrar</button>
         <p class="mt-5 mb-3 text-muted">© SiGN - @DateTime.Now.Year</p>
     </form>
 
@@ -46,6 +44,17 @@
 
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/jquery-ui.js"></script>
+<script src="~/lib/jquery.maskedinput/jquery.maskedinput.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+@*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
 <script src="~/lib/feather-icons/feather.min.js"></script>
+
+
+@section Scripts
+{
+    <script src="~/js/app/conformidade/conformidade-login.js"></script>
+}
+
 <script src="~/js/site.js" asp-append-version="true"></script>
