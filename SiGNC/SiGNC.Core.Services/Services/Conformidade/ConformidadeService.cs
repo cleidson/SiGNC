@@ -204,7 +204,7 @@ namespace SiGNC.Core.Services.Services.Conformidade
                         OrigemConformidadeId = int.Parse(conformidade.OrigemConformidadeId),
                         StatusConformidadeId = int.Parse(conformidade.StatusConformidadeId),
                         UsuarioSolicitanteId = conformidade.UsuarioSolicitanteId,
-                        UsuarioGestorId = "0a1ff47b-0cc3-43f8-8687-3d1c11bb00bf", //Usuário logado
+                        UsuarioGestorId = "96f6259c-c65b-47ea-a696-b2a628f4ed72", //Usuário logado
                         TipoConformidadeId = 3,
                         Reincidente = conformidade.Reincidente,
                         Requisito = conformidade.Requisito,

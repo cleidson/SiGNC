@@ -1,14 +1,12 @@
 ﻿/* globals Chart:false, feather:false */
 
 (function () {
-    'use strict'
-
-    feather.replace()
+   
     carregaChart();
+    feather.replace()
     var dias = [];
     var total = [];
     // Graphs
-    var ctx = document.getElementById('myChart') 
 
     function carregaChart() {
          
@@ -24,6 +22,7 @@
 
                     });
 
+                    var ctx = document.getElementById('myChart') 
                     var myChart = new Chart(ctx, {
                         type: 'line',
                         data: {
@@ -52,14 +51,7 @@
                     });
 
                     console.table(data);
-                },
-                error: (data) => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Ocorreu um erro na requisição, tente novamente mais tarde)'
-                    })
-                }
+                } 
             });
     
     }
