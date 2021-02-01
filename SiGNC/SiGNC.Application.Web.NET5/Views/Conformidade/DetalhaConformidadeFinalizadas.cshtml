@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewData["Title"] = "Detalhes da conformidade";
+    ViewData["HeaderPage"] = "Detalhes da conformidade";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Detalhes da conformidade</h1>
+</div>
+<input type="hidden" name="ConformidadeHiddenId" id="ConformidadeHiddenId" value="@ViewBag.ConformidadeHiddenId" />
+
+<form id="form-detalha-conformidade">
+
+    <div class="flex-row margin-top-10px">
+
+        <!-- Formulário cadastro básico-->
+        <partial name="~/Views/Conformidade/Partial/_FormCadastroBasicoConformidade.cshtml" />
+
+        <!-- Detalhamento da conformidade -->
+        <partial name="~/Views/Conformidade/Partial/_FormDetalhamentoConformidade.cshtml" />
+
+        <!-- Ação corretiva-->
+        <partial name="~/Views/Conformidade/Partial/_FormAcaoCorretivaConformidade.cshtml" />
+
+        <!-- Análise causa raiz -->
+        <partial name="~/Views/Conformidade/Partial/_FormCausaRaiz.cshtml" />
+        <div class="form-row">
+            <div class="form-group col-md-12 float-md-right">
+                <a class="btn btn-info float-md-right"asp-controller="Finalizadas" asp-action="Index" >Voltar</a>
+            </div>
+        </div> 
+    </div>
+</form>
+
+@section Scripts
+{
+
+    <script src="~/js/app/conformidade/conformidade-details.js"></script>
+
+}

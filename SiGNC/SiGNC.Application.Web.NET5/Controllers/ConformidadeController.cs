@@ -26,7 +26,7 @@ namespace SiGNC.Application.Web.NET5.Controllers
         private readonly IStatusConformidadeService _statusConformidadeService;
         private readonly ITipoAcaoConformidadeService _tipoAcaoConformidadeService;
         private readonly IUsuarioConformidadeService _usuarioConformidadeService;
-        private readonly ICausaRaizConformidadeService _causaRaizConformidadeService; 
+        private readonly ICausaRaizConformidadeService _causaRaizConformidadeService;
         private readonly IConformidadeService _conformidadeService;
         private static Random random = new Random();
 
@@ -69,26 +69,22 @@ namespace SiGNC.Application.Web.NET5.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        [Route("EmImplantacao")]
+        public IActionResult EmImplantacao()
+        {
+            return View();
+        }
+
+
         [HttpGet]
         [Route("Finalizadas")]
         public IActionResult Finalizadas()
         {
             return View();
         }
-
-        //[Route("salvar")]
-        //[HttpPost("salvar")]
-        //public IActionResult SalvarConformidade(ConformidadeViewModel conformidade)
-        //{
-        //    try
-        //    {
-        //        return Json(conformidade);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
+         
 
         [HttpPost("salvar")]
         [Route("salvar")]
@@ -103,7 +99,7 @@ namespace SiGNC.Application.Web.NET5.Controllers
                 do
                 {
                     result = false;
-                    var RandomStringValue = "NC"+RandomString(10);
+                    var RandomStringValue = "NC" + RandomString(10);
 
                     if (await _conformidadeService.GetNumConformidade(RandomStringValue) == false)
                     {
@@ -169,13 +165,44 @@ namespace SiGNC.Application.Web.NET5.Controllers
 
         }
 
-        [HttpGet("conformidade/list")]
-        [Route("conformidade/list")]
-        public async Task<JsonResult> GetConformidades()
+
+
+        [HttpPost("editar")]
+        [Route("editar")]
+        public async Task<HttpResponseMessage> EditarConformidade(ConformidadeViewModel conformidade)
+        {
+            bool result;
+
+            try
+            {
+                result = await _conformidadeService.EditarConformidadeSync(new ConformidadeDto
+                {
+                    Id = conformidade.Id,
+                    StatusConformidadeId = conformidade.StatusConformidadeId
+                });
+
+
+                if (result)
+                    return await Task.Run(() => new HttpResponseMessage() { StatusCode = (System.Net.HttpStatusCode)200 });
+                else
+                    return await Task.Run(() => new HttpResponseMessage() { StatusCode = (System.Net.HttpStatusCode)400 });
+            }
+            catch (WebException ex)
+            {
+                return await Task.Run(() => new HttpResponseMessage() { StatusCode = (HttpStatusCode)ex.Status });
+                throw;
+            }
+
+        }
+
+
+        [HttpGet("conformidade/list/{Id}")]
+        [Route("conformidade/list/{Id}")]
+        public async Task<JsonResult> GetConformidades(int Id)
         {
             try
             {
-                var conformidades = (from or in await _conformidadeService.GetConformidadesSync()
+                var conformidades = (from or in await _conformidadeService.GetConformidadesSync(Id)
                                      select new ConformidadeTableViewModel
                                      {
                                          Id = or.Id,
@@ -330,6 +357,53 @@ namespace SiGNC.Application.Web.NET5.Controllers
             return View();
         }
 
+        [HttpGet, Route("details/finalizadas/{id}")]
+        public IActionResult DetalhaConformidadeFinalizadas(int Id)
+        {
+            ViewBag.ConformidadeHiddenId = Id;
+            return View();
+        }
+
+        [HttpGet, Route("details/implantacao/{id}")]
+        public IActionResult DetalhaConformidadeImplantacao(int Id)
+        {
+            ViewBag.ConformidadeHiddenId = Id;
+            return View();
+        }
+
+
+
+        [HttpGet, Route("edit/{id}")]
+        public IActionResult EditarConformidade(int Id)
+        {
+            try
+            {
+                ViewBag.ConformidadeHiddenId = Id;
+                return View();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+
+        [HttpGet, Route("edit/implantacao/{id}")]
+        public IActionResult EditarConformidadeImplantacao(int Id)
+        {
+            try
+            {
+                ViewBag.ConformidadeHiddenId = Id;
+                return View();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
 
         [HttpPost("detalhe")]
         [Route("detalhe")]
@@ -338,10 +412,10 @@ namespace SiGNC.Application.Web.NET5.Controllers
             try
             {
                 var conformidades = await _conformidadeService.GetConformidadeSync(int.Parse(requestId));
-                return Json(conformidades); 
+                return Json(conformidades);
             }
             catch (Exception ex)
-            { 
+            {
                 throw ex;
             }
         }

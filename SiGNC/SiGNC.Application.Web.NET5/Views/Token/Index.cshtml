@@ -14,6 +14,7 @@
     <title>@ViewData["Title"] - SiGNC</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/login.css" />
+    <link href="~/lib/bootstrap/font-awesome/css/all.min.css" rel="stylesheet" />
 
 </head>
 <body class="text-center">
@@ -21,21 +22,21 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="mb-4"><h1>SiGNC</h1></div>
         @*<img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">*@
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="inputEmail" class="sr-only">Email address</label>
+    <h1 class="h3 mb-3 font-weight-normal">  <span class="fa fa-user-circle" style="font-size:80px"></span></h1>
+        <label for="inputEmail" class="sr-only">E-mail</label>
         @*<input>*@
-        <input asp-for="Email" class="form-control"  type="email" id="inputEmail" class="form-control" placeholder="Insira o e-mail" required="" autofocus=""/>
+        <input asp-for="Email" class="form-control"  type="email" id="inputEmail"   placeholder="Insira o e-mail" required="" autofocus=""/>
 
         <label for="inputPassword" class="sr-only">Password</label>
         @*<input type="password" id="inputPassword" class="form-control" placeholder="Insira a senha" required="">*@
-        <input asp-for="Senha" class="form-control" type="password" id="inputPassword" class="form-control" placeholder="Insira a senha" required="" />
+        <input asp-for="Senha" class="form-control" type="password" id="inputPassword"   placeholder="Insira a senha" required="" />
         <span asp-validation-for="Senha" class="text-danger"></span>
         <div class="checkbox mb-3">
             @*<label>
                 <input type="checkbox" value="remember-me"> Remember me
             </label>*@
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
         <p class="mt-5 mb-3 text-muted">© SiGN - @DateTime.Now.Year</p>
     </form>
 

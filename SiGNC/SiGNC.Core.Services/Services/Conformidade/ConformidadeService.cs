@@ -140,6 +140,59 @@ namespace SiGNC.Core.Services.Services.Conformidade
             }
         }
 
+        public Task<List<ConformidadeDto>> GetConformidadesSync(int statusConformidadeId)
+        {
+            try
+            { 
+                var conformidades = (from or in _db.Conformidades
+                                     where or.StatusConformidadeId == statusConformidadeId
+                                     select new ConformidadeDto
+                                     {
+                                         Id = or.Id,
+                                         UsuarioSolicitante = new UsuarioDto
+                                         {
+                                             Id = or.UsuarioSolicitanteId,
+                                             Nome = or.UsuarioSolicitante.Nome
+                                         },
+                                         NumeroConformidade = or.NumeroConformidade,
+                                         StatusConformidade = new StatusConformidadeDto
+                                         {
+                                             Id = or.StatusConformidade.Id,
+                                             Nome = or.StatusConformidade.Nome
+
+                                         },
+                                         DataEmissao = or.DataCadastro.Value.ToString("dd/MM/yyyy")
+                                     }).AsQueryable();
+
+                return conformidades.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<bool> EditarConformidadeSync(ConformidadeDto conformidade)
+        {
+            try
+            {
+                using (_db)
+                { 
+                    var data = _db.Conformidades.Where(t => t.Id == conformidade.Id).FirstOrDefault(); 
+                    data.StatusConformidadeId = int.Parse(conformidade.StatusConformidadeId);
+                    _db.Entry(data).State = EntityState.Modified; 
+                    var result = _db.SaveChanges() > 0;
+                    await _db.DisposeAsync();
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public async Task<bool> SalvarConformidadeSync(ConformidadeDto conformidade)
         {
             try
@@ -195,5 +248,7 @@ namespace SiGNC.Core.Services.Services.Conformidade
                 throw ex;
             }
         }
+
+      
     }
 }

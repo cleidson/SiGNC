@@ -1,4 +1,4 @@
-﻿(function () { 
+﻿(function () {
     let conformidade = {
         Eminente: { Id: "", Nome: "" },
         NumeroConformidade: "",
@@ -19,7 +19,7 @@
             RiscoOportunidade: "",
             DataImplatacao: "",
             Responsavel: { Id: "", Nome: "" },
-            TipoAcaoId:""
+            TipoAcaoId: ""
         },
         CausaRaizes: [
             {
@@ -49,7 +49,7 @@
         //Ação Corretiva
         conformidade.AcaoCorretiva.Descricao = $("#acao-imediata-descricao").val();
         conformidade.AcaoCorretiva.DataImplantacao = $("#data-acao-imediata").val();
-        conformidade.AcaoCorretiva.RiscoOportunidade = $("#acao-imediata-riscoOportunidade").val(); 
+        conformidade.AcaoCorretiva.RiscoOportunidade = $("#acao-imediata-riscoOportunidade").val();
         conformidade.AcaoCorretiva.TipoAcaoId = $('#selectTipoAcao').selectpicker('val');
 
 
@@ -89,7 +89,7 @@
         });
 
         event.preventDefault();
-    }); 
+    });
 
     $("#adicionar-detalhamento-naoconformidade").click(function (event) {
 
@@ -141,12 +141,12 @@
         if ($("#acao-imediata-descricao").val() == "") {
             $("#acao-imediata-descricao").addClass('is-invalid');
             validaAcao = false;
-        } else { 
+        } else {
             $("#acao-imediata-descricao").removeClass('is-invalid');
             $("#acao-imediata-descricao").addClass('is-valid');
             validaAcao = true;
         }
-         
+
 
         if ($("#responsavel-acao-imediata").val() == "") {
             $("#responsavel-acao-imediata").removeClass('is-valid');
@@ -159,7 +159,7 @@
             validaResponsavel = true;
         }
 
-        if ($("#data-acao-imediata").val() == "") { 
+        if ($("#data-acao-imediata").val() == "") {
             $("#data-acao-imediata").addClass('is-invalid');
             validaDataAcaoImediata = false;
         } else {
@@ -167,12 +167,12 @@
             $("#data-acao-imediata").removeClass('is-valid');
             $("#data-acao-imediata").addClass('is-valid');
             validaDataAcaoImediata = true;
-        } 
+        }
 
         if (validaEminente && validaAcao && validaResponsavel && validaDataAcaoImediata)
             return true;
         else
-            return false; 
+            return false;
     }
 
     $("#delete-row").click(function () {
@@ -195,7 +195,7 @@
             mesF = (mes.length == 1) ? '0' + mes : mes,
             anoF = data.getFullYear();
         return diaF + "/" + mesF + "/" + anoF;
-    } 
+    }
 
     $("input[name=descricao-detalhamento-nao-conformidade]").hover(
         function () {
@@ -233,7 +233,7 @@
     });
 
     function Init() {
-
+        GetStatus();
         GetOrigem();
         GetTipoAcao();
         GetCausasRaizes();
@@ -248,15 +248,15 @@
     $("#responsavel-acao-imediata").autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: 'usuario/search', type: "POST", dataType: "json", 
+                url: 'usuario/search', type: "POST", dataType: "json",
                 data: { term: request.term },
 
                 success: function (data) {
-                    response($.map(data, function (item) { 
+                    response($.map(data, function (item) {
                         return { label: item.Nome, value: item.Nome, id: item.Id };
                     }));
                 },
-                select: function (event, ui) { 
+                select: function (event, ui) {
                     $("input[type=hidden]").val(ui.item.id);
                 }
             });
@@ -301,7 +301,7 @@
                 $("#emitente").addClass('is-invalid');
             }
         }
-    ); 
+    );
 
     $("#acao-imediata-descricao").hover(
         function () {
@@ -314,7 +314,7 @@
                 $("#acao-imediata-descricao").addClass('is-invalid');
             }
         }
-    ); 
+    );
 
     $("#acao-imediata-descricao").on("change",
         function () {
@@ -384,15 +384,15 @@
     $("#emitente").autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: 'usuario/search', type: "POST", dataType: "json", 
+                url: 'usuario/search', type: "POST", dataType: "json",
                 data: { term: request.term },
 
                 success: function (data) {
-                    response($.map(data, function (item) { 
+                    response($.map(data, function (item) {
                         return { label: item.Nome, value: item.Nome, id: item.Id };
                     }));
                 },
-                select: function (event, ui) { 
+                select: function (event, ui) {
                     $("input[type=hidden]").val(ui.item.id);
                 }
             });
@@ -414,7 +414,7 @@
         $("#emitente").removeClass('is-invalid');
         $("#emitente").addClass('is-valid');
     });
-     
+
     function GetTipoAcao() {
         $.ajax({
             type: "GET",
@@ -456,6 +456,27 @@
         });
     }
 
+    function GetStatus() {
+        $.ajax({
+            type: "GET",
+            url: "/status/list",
+            success: (data) => {
+                $.each(data, function (key, value) {
+                    $("#selectStatus").append('<option value=' + value.Id + '>' + value.Nome + '</option>');
+                    $("#selectStatus").selectpicker('refresh');
+                });
+                console.table(data);
+            },
+            error: (data) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocorreu um erro na requisição, tente novamente mais tarde)'
+                })
+            }
+        });
+    }
+
     function GetCausasRaizes() {
         $.ajax({
             type: "GET",
@@ -468,7 +489,7 @@
                         $('<td>').html('<input type="text" class="form-control" id="causa-raiz-descritivo-' + item.Id + '" disabled placeholder="' + item.Descricao + '" />'),
                         $('<td>').html('<select class=" form-control"  title="Ocorreu?"  id="causa-raiz-ocorreu-' + item.Id + '"><option>Sim</option><option>Não</option></select>'),
                         $('<td>').html(' <input type="text" class="form-control" id="causa-raiz-quais' + item.Id + '">'),
-                    ).appendTo('#table-cr'); 
+                    ).appendTo('#table-cr');
                 });
             },
             error: (data) => {
@@ -484,7 +505,7 @@
     function GetConformidades() {
         $.ajax({
             type: "GET",
-            url: "conformidade/list",
+            url: "conformidade/list/1",
             success: (data) => {
                 $.each(data, function (key, item) {
 
@@ -493,9 +514,17 @@
                         $('<td>').text(item.NumeroConformidade),
                         $('<td>').text(item.DataEmissao),
                         $('<td>').text(item.UsuarioEmitente),
-                        $('<td data-id="' + item.IdStatusConformidade +'" style="text-align:center" >').text(item.DescricaoStatusConformidade)
+                        $('<td data-id="' + item.IdStatusConformidade + '" style="text-align:center" >').text(item.DescricaoStatusConformidade)
                     ).appendTo('#table-conformidades-pendentes');
                 });
+
+
+
+                if ($("#table-conformidades-pendentes tbody").children('tr').length == 0) {
+                    setTableEmpty("#table-conformidades-pendentes");
+                } else {
+                    $("#tr-blank").remove();
+                }
             },
             error: (data) => {
                 Swal.fire({
@@ -535,10 +564,17 @@
         return tbl;
     };
 
-    function setTableEmpty() {
+    function setTableEmpty(table) {
         var markup = "<tr id='tr-blank'> <td colspan='3' class='text-center'>Não há detalhes de não conformidade</td></tr>";
-        $("#table-detalhamento tbody").append(markup); 
+
+        if (table == "#table-conformidades-pendentes") { 
+            var markupPendente = "<tr id='tr-blank'> <td colspan='6' class='text-center'>Não há detalhes de não conformidade</td></tr>";
+            $("#table-conformidades-pendentes tbody").append(markupPendente);
+        }
+        else
+            $("#table-detalhamento tbody").append(markup);
     }
+
 
     Init();
 })(jQuery)

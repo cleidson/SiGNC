@@ -42,9 +42,25 @@ namespace SiGNC.Application.Web.NET5.Controllers
         [Route("Login")]
         [HttpPost("Login")]
         //[ValidateAntiForgeryToken]
-        public IActionResult Login([FromForm] UsuarioViewModel user)
+        public async Task<IActionResult> Login([FromForm] UsuarioViewModel user)
         {
-            return RedirectToAction("Index", "Home");
+            if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Senha))
+                return BadRequest("Email e Senha inválidos");
+            else
+            {
+                var Token = await _autorization.AuthenticateSync(new AuthenticateRequestDto
+                {
+                    Email = user.Email,
+                    Senha = user.Senha,
+
+                });
+
+                if(Token == null)
+                    return BadRequest("Email e Senha inválidos");
+
+                return RedirectToAction("Index", "Home");
+            };
+           
         }
 
         [AllowAnonymous]

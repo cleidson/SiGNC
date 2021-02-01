@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewData["Title"] = "Pendentes";
+    ViewData["HeaderPage"] = "Editar conformidades";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Editar Conformidade </h1>
+</div>
+
+<input type="hidden" name="ConformidadeHiddenId" id="ConformidadeHiddenId" value="@ViewBag.ConformidadeHiddenId" />
+<form id="form-edit-conformidade">
+
+    <div class="flex-row margin-top-10px">
+
+        <!-- Formulário cadastro básico-->
+        <partial name="~/Views/Conformidade/Partial/_FormCadastroBasicoConformidade.cshtml" />
+
+        <!-- Detalhamento da conformidade -->
+        <!--<partial name="~/Views/Conformidade/Partial/_FormDetalhamentoConformidade.cshtml" />-->
+
+        <!-- Ação corretiva-->
+        <!--<partial name="~/Views/Conformidade/Partial/_FormAcaoCorretivaConformidade.cshtml" />-->
+
+        <!-- Análise causa raiz -->
+        <!--<partial name="~/Views/Conformidade/Partial/_FormCausaRaiz.cshtml" />-->
+
+        <div class="form-row">
+            <div class="form-group col-md-12 float-md-right">
+                <button type="button" class=" margin-left-10px btn btn-primary float-md-right" id="btn-salvar-conformidade">Salvar</button>
+                <a class="btn btn-danger float-md-right" asp-controller="EmAndamento" asp-action="Index">Cancelar</a>
+            </div>
+        </div>
+
+        
+    </div>
+</form>
+
+
+
+@section Scripts
+{
+
+    <script src="~/js/app/conformidade/conformidade-edit.js"></script>
+
+}

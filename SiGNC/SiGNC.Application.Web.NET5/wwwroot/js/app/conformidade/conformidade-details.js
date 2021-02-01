@@ -100,7 +100,7 @@
                     var $tr = $('<tr data-id="' + item.Id + '">').append(
                         $('<td>').text(item.CausaRaizId),
                         $('<td>').html('<input type="text" class="form-control" id="causa-raiz-descritivo-' + item.CausaRaizId + '" disabled placeholder="' + item.CausaRaizDescricao + '" />'),
-                        $('<td>').html('<select class=" form-control"  title="Ocorreu?" disabled  id="causa-raiz-ocorreu-' + item.Id + '"><option value="Sim">Sim</option><option value="Não">Não</option></select>'),
+                        $('<td>').html('<select class=" form-control"  title="Ocorreu?" disabled  id="causa-raiz-ocorreu-' + item.Id + '"><option value="Sim">Sim</option><option value="Nao">Não</option></select>'),
                         $('<td>').html(' <input type="text" class="form-control" id="causa-raiz-quais' + item.CausaRaizId + '" disabled placeholder='+ item.Quais + ' >'),
                     ).appendTo('#table-cr'); 
                      

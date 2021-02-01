@@ -32,6 +32,7 @@ namespace SiGNC.Core.Services.Services.Conformidade
             try
             {
                 var status = (from or in _db.StatusConformidades
+                              where or.Id != 2
                                select new StatusConformidadeDto
                                {
                                    Id = or.Id,

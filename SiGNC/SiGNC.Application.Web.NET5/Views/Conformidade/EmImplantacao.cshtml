@@ -1,11 +1,11 @@
 ﻿
 @{
     ViewData["Title"] = "Pendentes";
-    ViewData["HeaderPage"] = "Andamentos da  conformidades";
+    ViewData["HeaderPage"] = "Impltanção das  conformidades";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Conformidades em andamento</h1>
+    <h1 class="h2">Conformidades em implatanção</h1>
 </div>
 
 <div class="flex-row margin-top-10px">
@@ -29,7 +29,7 @@
                 <partial name="~/Views/Conformidade/Partial/_FormCausaRaiz.cshtml" />
 
                 <div class="form-row">
-                    
+
                     <div class="form-group col-md-12 float-md-right">
 
                         <button type="button" class="btn btn-primary float-md-right   margin-left-4px" id="btn-salvar-conformidade">Salvar</button>
@@ -43,8 +43,8 @@
         </div>
     </form>
 </div>
- 
+
 @section Scripts
 {
-    <script src="~/js/app/conformidade/conformidade-em-andamento.js"></script>
+    <script src="~/js/app/conformidade/conformidade-em-implantacao.js"></script>
 }
