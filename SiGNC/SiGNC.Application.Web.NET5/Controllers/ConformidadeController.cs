@@ -211,7 +211,7 @@ namespace SiGNC.Application.Web.NET5.Controllers
                                          NumeroConformidade = or.NumeroConformidade,
                                          DescricaoStatusConformidade = or.StatusConformidade.Nome,
                                          IdStatusConformidade = or.StatusConformidade.Id
-                                     }).ToList().OrderByDescending(t => t.DataEmissao);
+                                     }).ToList().OrderByDescending(t => t.Id);
                 return Json(conformidades);
             }
             catch (Exception ex)

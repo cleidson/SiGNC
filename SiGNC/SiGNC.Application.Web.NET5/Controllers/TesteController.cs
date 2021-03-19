@@ -21,7 +21,7 @@ namespace SiGNC.Application.Web.NET5.Controllers
 
 
         [HttpGet]
-        [Route("getusuario")]
+        [Route("users")]
         public async Task<IActionResult> GetUsuarios()
         {
             var lista = new List<UsuarioViewModel>();

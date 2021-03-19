@@ -118,7 +118,7 @@ namespace SiGNC.Application.Web.NET5.Controllers
 
         [HttpGet]
         [Authorize()]
-        [Route("getusuario")]
+        [Route("users")]
         public IActionResult GetUsuarios()
         {
             var lista = new List<UsuarioViewModel>();
